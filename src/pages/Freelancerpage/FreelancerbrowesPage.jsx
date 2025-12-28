@@ -540,9 +540,6 @@ function SkillUsersScreenInline({ skill, onBack }) {
     });
   }
 
-
-
-
   function renderJobs() {
     if (loading)
       return <div style={{ padding: 24 }}>Loading jobs...</div>;
@@ -858,18 +855,6 @@ function SkillUsersScreenInline({ skill, onBack }) {
    - It handles navigation stack: categories -> subcategories -> skill/jobs
    --------------------------- */
 export default function Categories() {
-
-  const [collapsed, setCollapsed] = useState(
-    localStorage.getItem("sidebar-collapsed") === "true"
-  );
-
-  useEffect(() => {
-    function handleToggle(e) {
-      setCollapsed(e.detail);
-    }
-    window.addEventListener("sidebar-toggle", handleToggle);
-    return () => window.removeEventListener("sidebar-toggle", handleToggle);
-  }, []);
   // simple internal stack navigation
   const [stack, setStack] = useState([{ name: "categories", params: {} }]);
   const push = (name, params = {}) => setStack((s) => [...s, { name, params }]);
@@ -877,7 +862,6 @@ export default function Categories() {
   const current = stack[stack.length - 1];
   const [selectedSkill, setSelectedSkill] = useState(null);
 
-  
 
   // Categories state
   const [catQuery, setCatQuery] = useState("");
@@ -1149,21 +1133,838 @@ export default function Categories() {
 
   /* ---------- main render ---------- */
   return (
-    <div
-      className="freelance-wrapper"
-      style={{
-        marginLeft: collapsed ? "-110px" : "50px",
-        transition: "margin-left 0.25s ease",
-      }}
-    >
-      <div style={styles.page}>
-
-        {current.name === "categories" && renderCategories()}
-        {current.name === "subcategories" && renderSubcategories()}
-        {current.name === "skill" && renderSkill()}
-      </div>
+    <div style={styles.page}>
+      {current.name === "categories" && renderCategories()}
+      {current.name === "subcategories" && renderSubcategories()}
+      {current.name === "skill" && renderSkill()}
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useMemo, useState } from "react";
+
+// const jobCategories1 = {
+//   'Graphics & Design': [
+//     'Logo Design',
+//     'Brand Style Guides',
+//     'Business Cards & Stationery',
+//     'Illustration',
+//     'Pattern Design',
+//     'Website Design',
+//     'App Design',
+//     'UX Design',
+//     'Game Art',
+//     'NFTs & Collectibles',
+//     'Industrial & Product Design',
+//     'Architecture & Interior Design',
+//     'Landscape Design',
+//     'Fashion Design',
+//     'Jewelry Design',
+//     'Presentation Design',
+//     'Infographic Design',
+//     'Vector Tracing',
+//     'Car Wraps',
+//     'Image Editing',
+//     'Photoshop Editing',
+//     'T-Shirts & Merchandise',
+//     'Packaging Design',
+//     'Book Design',
+//     'Album Cover Design',
+//     'Podcast Cover Art',
+//     'Menu Design',
+//     'Invitation Design',
+//     'Brochure Design',
+//     'Poster Design',
+//     'Signage Design',
+//     'Flyer Design',
+//     'Social Media Design',
+//     'Print Design',
+//   ],
+
+//   'Programming & Tech': [
+//     'Website Development',
+//     'Website Builders & CMS',
+//     'Web Programming',
+//     'E-Commerce Development',
+//     'Game Development',
+//     'Mobile Apps (iOS & Android)',
+//     'Desktop Applications',
+//     'Chatbots',
+//     'QA & Review',
+//     'User Testing',
+//     'Support & IT',
+//     'Data Analysis & Reports',
+//     'Convert Files',
+//     'Databases',
+//     'Cybersecurity ',
+//     ' Data Protection',
+//     'Cloud Computing',
+//     'DevOps',
+//     'AI Development',
+//     'Machine Learning',
+//     'Blockchain & NFTs',
+//     'Scripts & Automation',
+//     'Software Customization',
+//   ],
+
+//   'Digital Marketing': [
+//     'Social Media Marketing',
+//     'SEO',
+//     'Content Marketing',
+//     'Video Marketing',
+//     'Email Marketing',
+//     'SEM (Search Engine Marketing)',
+//     'Influencer Marketing',
+//     'Local SEO',
+//     'Affiliate Marketing',
+//     'Mobile Marketing & Advertising',
+//     'Display Advertising',
+//     'E-Commerce Marketing',
+//     'Text Message Marketing',
+//     'Crowdfunding',
+//     'Marketing Strategy',
+//     'Web Analytics',
+//     'Domain Research',
+//     'Music Promotion',
+//     'Book & eBook Marketing',
+//     'Podcast Marketing',
+//     'Community Management',
+//     'Marketing Consulting',
+//   ],
+
+//   'Writing & Translation': [
+//     'Articles & Blog Posts',
+//     'Proofreading & Editing',
+//     'Translation',
+//     'Website Content',
+//     'Technical Writing',
+//     'Copywriting',
+//     'Brand Voice & Tone',
+//     'Resume Writing',
+//     'Cover Letters',
+//     'LinkedIn Profiles',
+//     'Press Releases',
+//     'Product Descriptions',
+//     'Case Studies',
+//     'White Papers',
+//     'Scriptwriting',
+//     'Speechwriting',
+//     'Creative Writing',
+//     'Book Editing',
+//     'Beta Reading',
+//     'Grant Writing',
+//     'UX Writing',
+//     'Email Copy',
+//     'Business Names & Slogans',
+//     'Transcription',
+//     'Legal Writing',
+//   ],
+
+//   'Video & Animation': [
+//     'Whiteboard & Animated Explainers',
+//     'Video Editing',
+//     'Short Video Ads',
+//     'Logo Animation',
+//     'Character Animation',
+//     '2D/3D Animation',
+//     'Intros & Outros',
+//     'Lyric & Music Videos',
+//     'Visual Effects',
+//     'Spokesperson Videos',
+//     'App & Website Previews',
+//     'Product Photography & Demos',
+//     'Subtitles & Captions',
+//     'Live Action Explainers',
+//     'Unboxing Videos',
+//     'Slideshow Videos',
+//     'Animation for Kids',
+//     'Trailers & Teasers',
+//   ],
+
+//   'Music & Audio': [
+//     'Voice Over',
+//     'Mixing & Mastering',
+//     'Producers & Composers',
+//     'Singers & Vocalists',
+//     'Session Musicians',
+//     'Songwriters',
+//     'Audiobook Production',
+//     'Sound Design',
+//     'Audio Editing',
+//     'Jingles & Intros',
+//     'Podcast Editing',
+//     'Music Transcription',
+//     'Dialogue Editing',
+//     'DJ Drops & Tags',
+//     'Music Promotion',
+//   ],
+
+//   'AI Services': [
+//     'AI Artists',
+//     'AI Applications',
+//     'AI Video Generators',
+//     'AI Music Generation',
+//     'AI Chatbot Development',
+//     'AI Website Builders',
+//     'Custom GPT & LLMs',
+//     'AI Training Data Preparation',
+//     'Text-to-Speech / Voice Cloning',
+//     'Prompt Engineering',
+//   ],
+
+//   'Data': [
+//     'Data Entry',
+//     'Data Mining & Scraping',
+//     'Data Analytics & Reports',
+//     'Database Design',
+//     'Data Visualization',
+//     'Dashboards',
+//     'Excel / Google Sheets',
+//     'Statistical Analysis',
+//     'Data Engineering',
+//     'Machine Learning Models',
+//     'Data Cleaning',
+//   ],
+
+//   'Business': [
+//     'Business Plans',
+//     'Market Research',
+//     'Branding Services',
+//     'Legal Consulting',
+//     'Financial Consulting',
+//     'Career Counseling',
+//     'Project Management',
+//     'Supply Chain Management',
+//     'HR Consulting',
+//     'E-Commerce Management',
+//     'Business Consulting',
+//     'Presentations',
+//     'Virtual Assistant',
+//   ],
+
+//   'Finance': [
+//     'Accounting & Bookkeeping',
+//     'Financial Forecasting',
+//     'Financial Modeling',
+//     'Tax Consulting',
+//     'Crypto & NFT Consulting',
+//     'Business Valuation',
+//     'Pitch Decks',
+//   ],
+
+//   'Photography': [
+//     'Product Photography',
+//     'Real Estate Photography',
+//     'Portraits',
+//     'Image Retouching',
+//     'Food Photography',
+//     'Drone Photography',
+//     'Lifestyle Photography',
+//     'AI Image Enhancement',
+//   ],
+
+//   'Lifestyle': [
+//     'Gaming',
+//     'Astrology & Psychics',
+//     'Online Tutoring',
+//     'Arts & Crafts',
+//     'Fitness Lessons',
+//     'Nutrition',
+//     'Relationship Advice',
+//     'Personal Styling',
+//     'Cooking Lessons',
+//     'Life Coaching',
+//     'Travel Advice',
+//     'Wellness & Meditation',
+//     'Language Lessons',
+//   ],
+
+//   'Consulting': [
+//     'Management Consulting',
+//     'Business Strategy',
+//     'HR & Leadership',
+//     'Financial Advisory',
+//     'Legal Consulting',
+//     'Technology Consulting',
+//     'Cybersecurity Consulting',
+//     'Marketing Strategy',
+//   ],
+
+//   'Personal Growth & Hobbies': [
+//     'Life Coaching',
+//     'Productivity Coaching',
+//     'Study Skills',
+//     'Language Learning',
+//     'Public Speaking',
+//     'Career Mentoring',
+//     'Mindfulness & Meditation',
+//     'Confidence Coaching',
+//   ],
+// };
+
+// /* ------------------------ COMPONENT ------------------------ */
+// export default function Categories() {
+//   const [screen, setScreen] = useState("CATEGORIES"); // CATEGORIES | SUB
+//   const [selectedCategory, setSelectedCategory] = useState(null);
+
+//   const [search, setSearch] = useState("");
+//   const [subSearch, setSubSearch] = useState("");
+
+//   /* -------- FILTER CATEGORIES -------- */
+//   const filteredCategories = useMemo(() => {
+//     if (!search) return Object.keys(jobCategories1);
+//     return Object.keys(jobCategories1).filter((cat) =>
+//       cat.toLowerCase().includes(search.toLowerCase())
+//     );
+//   }, [search]);
+
+//   /* -------- FILTER SUB CATEGORIES -------- */
+//   const filteredSubCategories = useMemo(() => {
+//     if (!selectedCategory) return [];
+//     if (!subSearch) return jobCategories1[selectedCategory];
+//     return jobCategories1[selectedCategory].filter((sub) =>
+//       sub.toLowerCase().includes(subSearch.toLowerCase())
+//     );
+//   }, [subSearch, selectedCategory]);
+
+//   /* ------------------------ UI ------------------------ */
+//   return (
+//     <div style={styles.page}>
+//       {/* HEADER */}
+//       <div style={styles.appBar}>
+//         {screen === "SUB" && (
+//           <button style={styles.backBtn} onClick={() => setScreen("CATEGORIES")}>
+//             ←
+//           </button>
+//         )}
+//         <h2 style={styles.title}>
+//           {screen === "CATEGORIES" ? "Categories" : "Explore Job"}
+//         </h2>
+//       </div>
+
+//       {/* SEARCH */}
+//       <div style={styles.searchBox}>
+//         <input
+//           style={styles.input}
+//           placeholder="Search"
+//           value={screen === "CATEGORIES" ? search : subSearch}
+//           onChange={(e) =>
+//             screen === "CATEGORIES"
+//               ? setSearch(e.target.value)
+//               : setSubSearch(e.target.value)
+//           }
+//         />
+//         {(search || subSearch) && (
+//           <span
+//             style={styles.clear}
+//             onClick={() =>
+//               screen === "CATEGORIES" ? setSearch("") : setSubSearch("")
+//             }
+//           >
+//             ✕
+//           </span>
+//         )}
+//       </div>
+
+//       {/* BREADCRUMB */}
+//       {screen === "SUB" && (
+//         <div style={styles.breadcrumb}>
+//           <span style={{ color: "#777" }}>Categories / </span>
+//           <strong>{selectedCategory}</strong>
+//         </div>
+//       )}
+
+//       {/* LIST */}
+//       <div style={styles.list}>
+//         {screen === "CATEGORIES" &&
+//           (filteredCategories.length === 0 ? (
+//             <Empty text="No categories found" />
+//           ) : (
+//             filteredCategories.map((cat) => (
+//               <ListItem
+//                 key={cat}
+//                 label={cat}
+//                 onClick={() => {
+//                   setSelectedCategory(cat);
+//                   setScreen("SUB");
+//                 }}
+//               />
+//             ))
+//           ))}
+
+//         {screen === "SUB" &&
+//           (filteredSubCategories.length === 0 ? (
+//             <Empty text="No subcategories found" />
+//           ) : (
+//             filteredSubCategories.map((sub) => (
+//               <ListItem
+//                 key={sub}
+//                 label={sub}
+//                 onClick={() => {
+//                   alert(`Navigate to SkillUsersScreen → ${sub}`);
+//                 }}
+//               />
+//             ))
+//           ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+// /* ------------------------ HELPERS ------------------------ */
+// function ListItem({ label, onClick }) {
+//   return (
+//     <>
+//       <div style={styles.item} onClick={onClick}>
+//         <span>{label}</span>
+//         <span style={{ fontSize: 14 }}>›</span>
+//       </div>
+//       <div style={styles.divider} />
+//     </>
+//   );
+// }
+
+// function Empty({ text }) {
+//   return (
+//     <div style={styles.empty}>
+//       <div style={{ fontSize: 50, opacity: 0.4 }}>🔍</div>
+//       <p>{text}</p>
+//       <span>Try searching with different keywords</span>
+//     </div>
+//   );
+// }
+
+// /* ------------------------ STYLES ------------------------ */
+// const styles = {
+//   page: {
+//     fontFamily: "system-ui, sans-serif",
+//     background: "#fff",
+//     height: "100vh",
+//     display: "flex",
+//     flexDirection: "column",
+//   },
+//   appBar: {
+//     height: 56,
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     borderBottom: "1px solid #eee",
+//     position: "relative",
+//   },
+//   backBtn: {
+//     position: "absolute",
+//     left: 16,
+//     border: "none",
+//     background: "none",
+//     fontSize: 18,
+//     cursor: "pointer",
+//   },
+//   title: {
+//     margin: 0,
+//     fontSize: 22,
+//     fontWeight: 500,
+//   },
+//   searchBox: {
+//     margin: 16,
+//     border: "1px solid #d9d9d9",
+//     borderRadius: 12,
+//     padding: "10px 14px",
+//     display: "flex",
+//     alignItems: "center",
+//   },
+//   input: {
+//     flex: 1,
+//     border: "none",
+//     outline: "none",
+//     fontSize: 14,
+//   },
+//   clear: {
+//     cursor: "pointer",
+//     color: "#999",
+//   },
+//   breadcrumb: {
+//     padding: "0 16px 8px",
+//     fontSize: 14,
+//   },
+//   list: {
+//     flex: 1,
+//     overflowY: "auto",
+//   },
+//   item: {
+//     padding: "14px 16px",
+//     display: "flex",
+//     justifyContent: "space-between",
+//     cursor: "pointer",
+//   },
+//   divider: {
+//     height: 1,
+//     background: "#eee",
+//   },
+//   empty: {
+//     height: "100%",
+//     display: "flex",
+//     flexDirection: "column",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     color: "#777",
+//     gap: 6,
+//   },
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useEffect, useMemo, useState } from "react";
+// import {
+//   getFirestore,
+//   collection,
+//   doc,
+//   onSnapshot,
+//   updateDoc,
+//   increment,
+//   arrayUnion,
+//   arrayRemove,
+// } from "firebase/firestore";
+// import { getAuth } from "firebase/auth";
+
+// const db = getFirestore();
+// const auth = getAuth();
+
+// /* ------------------ HELPERS ------------------ */
+// const formatAmount = (amount) => {
+//   if (!amount) return "0";
+//   if (amount < 1000) return amount.toFixed(0);
+//   if (amount < 1_000_000) return (amount / 1000).toFixed(1).replace(".0", "") + "K";
+//   return (amount / 1_000_000).toFixed(1).replace(".0", "") + "M";
+// };
+
+// const timeAgo = (date) => {
+//   const diff = Date.now() - date.getTime();
+//   const sec = Math.floor(diff / 1000);
+//   if (sec < 60) return `${sec}s ago`;
+//   const min = Math.floor(sec / 60);
+//   if (min < 60) return `${min} min ago`;
+//   const hr = Math.floor(min / 60);
+//   if (hr < 24) return `${hr} hour${hr > 1 ? "s" : ""} ago`;
+//   const day = Math.floor(hr / 24);
+//   if (day < 30) return `${day} day${day > 1 ? "s" : ""} ago`;
+//   const month = Math.floor(day / 30);
+//   if (month < 12) return `${month} month${month > 1 ? "s" : ""} ago`;
+//   const year = Math.floor(day / 365);
+//   return `${year} year${year > 1 ? "s" : ""} ago`;
+// };
+
+// const randomSkillColor = (text) => {
+//   const colors = ["#E3F2FD", "#FFF9C4", "#E1F5FE", "#F3E5F5", "#FFEBEE", "#E8F5E9"];
+//   return colors[text.length % colors.length];
+// };
+
+// /* ------------------ MAIN COMPONENT ------------------ */
+// export default function SkillUsersScreen1({ skill }) {
+//   const [tab, setTab] = useState("Works Jobs");
+//   const [services, setServices] = useState([]);
+//   const [services24, setServices24] = useState([]);
+//   const [savedJobs, setSavedJobs] = useState([]);
+
+//   const userId = auth.currentUser?.uid;
+
+//   /* -------- STREAM SERVICES -------- */
+//   useEffect(() => {
+//     const unsub1 = onSnapshot(collection(db, "services"), (snap) => {
+//       setServices(processJobs(snap.docs));
+//     });
+
+//     const unsub2 = onSnapshot(collection(db, "service_24h"), (snap) => {
+//       setServices24(processJobs(snap.docs));
+//     });
+
+//     if (!userId) return;
+
+//     const unsub3 = onSnapshot(doc(db, "users", userId), (snap) => {
+//       setSavedJobs(snap.data()?.favoriteJobs || []);
+//     });
+
+//     return () => {
+//       unsub1();
+//       unsub2();
+//       unsub3 && unsub3();
+//     };
+//   }, [userId]);
+
+//   /* -------- FILTER BY SKILL -------- */
+//   const filterBySkill = (jobs) => {
+//     if (!skill) return jobs;
+//     const s = skill.toLowerCase();
+//     return jobs.filter((j) => {
+//       const skills = (j.skills || []).map((x) => x.toLowerCase());
+//       const tools = (j.tools || []).map((x) => x.toLowerCase());
+//       return (
+//         skills.some((x) => x.includes(s)) || tools.some((x) => x.includes(s))
+//       );
+//     });
+//   };
+
+//   const worksJobs = useMemo(() => filterBySkill(services), [services]);
+//   const hourJobs = useMemo(() => filterBySkill(services24), [services24]);
+
+//   /* -------- TAB CONTENT -------- */
+//   const renderContent = () => {
+//     if (tab === "Works Jobs") return renderList(worksJobs, false);
+//     if (tab === "24 Hour Jobs") return renderList(hourJobs, true);
+//     return renderSavedJobs();
+//   };
+
+//   /* ------------------ UI ------------------ */
+//   return (
+//     <div style={styles.page}>
+//       {/* APP BAR */}
+//       <div style={styles.appBar}>
+//         <button onClick={() => window.history.back()} style={styles.backBtn}>
+//           ←
+//         </button>
+//         <h2>{skill || "Jobs & Skills"}</h2>
+//       </div>
+
+//       {/* TABS */}
+//       <div style={styles.tabs}>
+//         {["Works Jobs", "24 Hour Jobs", "Saved Jobs"].map((t) => (
+//           <div key={t} onClick={() => setTab(t)} style={styles.tab}>
+//             <span>{t}</span>
+//             {tab === t && <div style={styles.indicator} />}
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* CONTENT */}
+//       <div style={{ flex: 1, overflowY: "auto" }}>{renderContent()}</div>
+//     </div>
+//   );
+
+//   /* ------------------ RENDER LIST ------------------ */
+//   function renderList(list, is24h) {
+//     if (list.length === 0) return empty("No jobs found");
+//     return list.map((job) => (
+//       <JobCard
+//         key={job.id}
+//         job={job}
+//         is24h={is24h}
+//         saved={savedJobs.includes(job.id)}
+//       />
+//     ));
+//   }
+
+//   function renderSavedJobs() {
+//     const all = [...services, ...services24].filter((j) =>
+//       savedJobs.includes(j.id)
+//     );
+//     if (!userId) return empty("Login to view saved jobs");
+//     if (all.length === 0) return empty("No saved jobs");
+//     return all.map((job) => (
+//       <JobCard
+//         key={job.id}
+//         job={job}
+//         is24h={services24.some((x) => x.id === job.id)}
+//         saved
+//       />
+//     ));
+//   }
+// }
+
+// /* ------------------ JOB CARD ------------------ */
+// function JobCard({ job, is24h, saved }) {
+//   const userId = auth.currentUser?.uid;
+
+//   const toggleSave = async () => {
+//     if (!userId) return;
+//     const ref = doc(getFirestore(), "users", userId);
+//     await updateDoc(ref, {
+//       favoriteJobs: saved ? arrayRemove(job.id) : arrayUnion(job.id),
+//     });
+//   };
+
+//   return (
+//     <div style={styles.card}>
+//       <div style={styles.cardHeader}>
+//         <h3>{job.title}</h3>
+//         <span>₹ {job.budget || job.budget_from}/day</span>
+//       </div>
+
+//       <div style={styles.skills}>
+//         {job.skills.slice(0, 2).map((s) => (
+//           <span
+//             key={s}
+//             style={{ ...styles.skill, background: randomSkillColor(s) }}
+//           >
+//             {s}
+//           </span>
+//         ))}
+//         {job.skills.length > 2 && (
+//           <span style={styles.more}>+{job.skills.length - 2}</span>
+//         )}
+//       </div>
+
+//       <p style={styles.desc}>{job.description}</p>
+
+//       <div style={styles.footer}>
+//         <span>👁 {job.views}</span>
+//         <span>⏱ {timeAgo(job.created_at)}</span>
+//         <span onClick={toggleSave} style={styles.bookmark}>
+//           {saved ? "🔖" : "📑"}
+//         </span>
+//       </div>
+//     </div>
+//   );
+// }
+
+// /* ------------------ DATA PROCESS ------------------ */
+// function processJobs(docs) {
+//   return docs
+//     .map((d) => {
+//       const data = d.data();
+//       if (!data.title || !data.description) return null;
+//       return {
+//         id: d.id,
+//         title: data.title,
+//         description: data.description,
+//         skills: data.skills || [],
+//         tools: data.tools || [],
+//         budget: data.budget || data.budget_from || 0,
+//         views: data.views || 0,
+//         created_at: data.created_at?.toDate?.() || new Date(),
+//       };
+//     })
+//     .filter(Boolean)
+//     .sort((a, b) => b.created_at - a.created_at);
+// }
+
+// /* ------------------ UI HELPERS ------------------ */
+// const empty = (text) => (
+//   <div style={styles.empty}>
+//     <div style={{ fontSize: 48 }}>🔍</div>
+//     <p>{text}</p>
+//   </div>
+// );
+
+// /* ------------------ STYLES ------------------ */
+// const styles = {
+//   page: {
+//     height: "100vh",
+//     display: "flex",
+//     flexDirection: "column",
+//     fontFamily: "system-ui",
+//     background: "#fff",
+//   },
+//   appBar: {
+//     height: 56,
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     borderBottom: "1px solid #eee",
+//     position: "relative",
+//   },
+//   backBtn: {
+//     position: "absolute",
+//     left: 16,
+//     background: "none",
+//     border: "none",
+//     fontSize: 20,
+//     cursor: "pointer",
+//   },
+//   tabs: {
+//     display: "flex",
+//     justifyContent: "space-around",
+//     padding: 12,
+//     borderBottom: "1px solid #eee",
+//   },
+//   tab: { cursor: "pointer", textAlign: "center" },
+//   indicator: {
+//     marginTop: 4,
+//     height: 4,
+//     width: 80,
+//     background: "#000",
+//     borderRadius: 20,
+//   },
+//   card: {
+//     margin: 12,
+//     padding: 16,
+//     borderRadius: 16,
+//     border: "1px solid #ccc",
+//     background: "#fff",
+//   },
+//   cardHeader: {
+//     display: "flex",
+//     justifyContent: "space-between",
+//     alignItems: "center",
+//   },
+//   skills: { display: "flex", gap: 6, margin: "8px 0" },
+//   skill: {
+//     padding: "4px 10px",
+//     borderRadius: 12,
+//     fontSize: 12,
+//   },
+//   more: {
+//     padding: "4px 10px",
+//     borderRadius: 12,
+//     background: "#eee",
+//     fontSize: 12,
+//   },
+//   desc: {
+//     fontSize: 13,
+//     color: "#666",
+//     lineHeight: 1.4,
+//   },
+//   footer: {
+//     display: "flex",
+//     gap: 12,
+//     alignItems: "center",
+//     marginTop: 10,
+//   },
+//   bookmark: { marginLeft: "auto", cursor: "pointer", fontSize: 22 },
+//   empty: {
+//     height: "100%",
+//     display: "flex",
+//     flexDirection: "column",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     color: "#777",
+//   },
+// };
+
 
 

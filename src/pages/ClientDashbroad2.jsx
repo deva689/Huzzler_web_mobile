@@ -19,8 +19,6 @@
 
 
 
-
-
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "../pages/Clientpages/slidebar/ClientSidebar";

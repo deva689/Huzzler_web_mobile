@@ -81,14 +81,6 @@ export default function FreelancerAcceptedChats() {
 
   return (
     <div style={{ padding: 16 }}>
-      <h1 style={{
-            background: "#fff",
-            padding: 14,
-            borderRadius: 12,
-            marginBottom: 12,
-            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
-            cursor: "pointer",
-          }}>Requested</h1>
       <h2 style={{ marginBottom: 20 }}>Accepted Chats</h2>
 
       {chatList.length === 0 && (
@@ -149,332 +141,266 @@ export default function FreelancerAcceptedChats() {
 
 
 // import React, { useEffect, useState } from "react";
+// import { rtdb } from "../../firbase/Firebase";
+// import { ref, onValue } from "firebase/database";
+
 // import {
-//   doc,
+//   getFirestore,
 //   collection,
 //   query,
 //   where,
 //   onSnapshot,
-//   getDocs,
-//   addDoc,
-//   setDoc,
-//   deleteDoc,
-//   serverTimestamp,
+//   doc,
+//   getDoc,
 // } from "firebase/firestore";
-// import { useNavigate, useParams } from "react-router-dom";
+
 // import { getAuth } from "firebase/auth";
+// import { useNavigate } from "react-router-dom";
 
-// /* ======================================================
-//    FREELANCER FULL DETAIL SCREEN – REACT (SINGLE FILE)
-// ====================================================== */
-
-// export default function FreelancerFullDetailScreen() {
-//   const { userId, jobid } = useParams();
-//   const navigate = useNavigate();
+// export default function FreelancerAcceptedChats() {
 //   const auth = getAuth();
-//   const currentUid = auth.currentUser?.uid;
+//   const user = auth.currentUser;
+//   const navigate = useNavigate();
+//   const db = getFirestore();
 
-//   /* ================= STATE ================= */
-//   const [profile, setProfile] = useState(null);
-//   const [loading, setLoading] = useState(true);
+//   const [chatList, setChatList] = useState([]);
 
-//   const [isRequested, setIsRequested] = useState(false);
-//   const [isAccepted, setIsAccepted] = useState(false);
-
-//   const [activeTab, setActiveTab] = useState("work"); // work | 24h
-//   const [services, setServices] = useState([]);
-//   const [services24h, setServices24h] = useState([]);
-
-//   const [showRequest, setShowRequest] = useState(false);
-//   const [projectTitle, setProjectTitle] = useState("");
-//   const [projectDesc, setProjectDesc] = useState("");
-
-//   /* ================= LOAD PROFILE ================= */
 //   useEffect(() => {
-//     if (!userId) return;
+//     if (!user) return;
 
-//     const unsub = onSnapshot(doc(db, "users", userId), (snap) => {
-//       setProfile(snap.exists() ? snap.data() : null);
-//       setLoading(false);
-//     });
-
-//     return () => unsub();
-//   }, [userId]);
-
-//   /* ================= CHECK REQUESTED ================= */
-//   useEffect(() => {
-//     if (!currentUid || !userId) return;
-
-//     const q = query(
-//       collection(db, "collaboration_requests"),
-//       where("clientId", "==", currentUid),
-//       where("freelancerId", "==", userId),
-//       where("status", "==", "sent")
+//     const notifRef = collection(db, "notifications");
+//     const qNotif = query(
+//       notifRef,
+//       where("freelancerId", "==", user.uid),
+//       where("read", "==", true)
 //     );
 
-//     getDocs(q).then((snap) => {
-//       if (!snap.empty) setIsRequested(true);
-//     });
-//   }, [currentUid, userId]);
+//     const unsub = onSnapshot(qNotif, (snap) => {
+//       const acceptedClients = snap.docs.map((d) => d.data().clientUid);
 
-//   /* ================= CHECK ACCEPTED ================= */
-//   useEffect(() => {
-//     if (!currentUid || !userId || !jobid) return;
+//       const userChatsRef = ref(rtdb, `userChats/${user.uid}`);
 
-//     const q = query(
-//       collection(db, "accepted_jobs"),
-//       where("clientId", "==", currentUid),
-//       where("freelancerId", "==", userId),
-//       where("jobId", "==", jobid)
-//     );
+//       onValue(userChatsRef, async (chatsSnap) => {
+//         const val = chatsSnap.val() || {};
 
-//     getDocs(q).then((snap) => {
-//       if (!snap.empty) setIsAccepted(true);
-//     });
-//   }, [currentUid, userId, jobid]);
+//         const filtered = await Promise.all(
+//           Object.entries(val)
+//             .filter(([_, chatData]) =>
+//               acceptedClients.includes(chatData.withUid)
+//             )
+//             .map(async ([chatId, chatData]) => {
+//               const clientRef = doc(db, "users", chatData.withUid);
+//               const clientSnap = await getDoc(clientRef);
 
-//   /* ================= LOAD SERVICES ================= */
-//   useEffect(() => {
-//     if (!userId) return;
+//               const clientData = clientSnap.exists() ? clientSnap.data() : {};
 
-//     const unsub1 = onSnapshot(
-//       collection(db, "users", userId, "services"),
-//       (snap) =>
-//         setServices(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
-//     );
+//               const clientName =
+//                 clientData.firstName && clientData.lastName
+//                   ? `${clientData.firstName} ${clientData.lastName}`
+//                   : "Agents";
 
-//     const unsub2 = onSnapshot(
-//       collection(db, "users", userId, "services_24h"),
-//       (snap) =>
-//         setServices24h(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
-//     );
+//               return {
+//                 chatId,
+//                 ...chatData,
+//                 clientName,
+//                 clientImg: clientData.profileImage || null,
+//               };
+//             })
+//         );
 
-//     return () => {
-//       unsub1();
-//       unsub2();
-//     };
-//   }, [userId]);
-
-//   /* ================= SEND REQUEST ================= */
-//   async function sendRequest() {
-//     if (!currentUid || !userId) return;
-
-//     await addDoc(collection(db, "collaboration_requests"), {
-//       clientId: currentUid,
-//       freelancerId: userId,
-//       title: projectTitle,
-//       description: projectDesc,
-//       status: "sent",
-//       timestamp: serverTimestamp(),
+//         setChatList(filtered);
+//       });
 //     });
 
-//     setIsRequested(true);
-//     setShowRequest(false);
-
-//     navigate("/chat", {
-//       state: {
-//         currentUid,
-//         otherUid: userId,
-//         initialMessage: projectTitle,
-//       },
-//     });
-//   }
-
-//   /* ================= BLOCK USER ================= */
-//   async function blockUser() {
-//     if (!currentUid || !userId) return;
-
-//     await setDoc(doc(db, "blocked_users", `${currentUid}_${userId}`), {
-//       blockedBy: currentUid,
-//       blockedUserId: userId,
-//       blockedAt: serverTimestamp(),
-//     });
-
-//     navigate(-1);
-//   }
-
-//   /* ================= RENDER ================= */
-//   if (loading) return <Center>Loading…</Center>;
-//   if (!profile) return <Center>User not found</Center>;
+//     return unsub;
+//   }, [user]);
 
 //   return (
 //     <div style={styles.page}>
 //       {/* HEADER */}
 //       <div style={styles.header}>
-//         <button onClick={() => navigate(-1)}>←</button>
-//         <div>
-//           <button onClick={blockUser}>🚩</button>
-//           <button
+//         <span style={styles.backBtn} onClick={() => navigate(-1)}>
+//           ←
+//         </span>
+//         <span style={styles.headerTitle}>Message</span>
+//       </div>
+
+//       {/* SEARCH BAR */}
+//       <div style={styles.searchWrap}>
+//         <input
+//           placeholder="Search"
+//           style={styles.searchInput}
+//         />
+//       </div>
+
+//       {/* REQUEST TEXT */}
+//       <div style={styles.requestText}>Request ({chatList.length})</div>
+
+//       {/* WHITE CARD LIST */}
+//       <div style={styles.listCard}>
+//         {chatList.length === 0 && (
+//           <p style={{ color: "#666", padding: 20 }}>No accepted chats yet.</p>
+//         )}
+
+//         {chatList.map((chat, i) => (
+//           <div
+//             key={chat.chatId}
 //             onClick={() =>
-//               navigator.share?.({
-//                 title: profile.firstName,
-//                 url: profile.linkedin,
+//               navigate("/chat", {
+//                 state: {
+//                   currentUid: user.uid,
+//                   otherUid: chat.withUid,
+//                 },
 //               })
 //             }
+//             style={styles.chatRow}
 //           >
-//             🔗
-//           </button>
-//         </div>
-//       </div>
+//             <img
+//               src={chat.clientImg || "/placeholder.png"}
+//               style={styles.avatar}
+//               alt="profile"
+//             />
 
-//       {/* PROFILE */}
-//       <div style={styles.profile}>
-//         <img
-//           src={profile.profileImage || "/placeholder.png"}
-//           alt=""
-//           style={styles.avatar}
-//         />
-//         <h2>
-//           {profile.firstName} {profile.lastName}
-//         </h2>
-//         <p>{profile.professional_title}</p>
+//             <div style={styles.chatTextWrap}>
+//               <div style={styles.chatName}>{chat.clientName}</div>
+//               <div style={styles.chatMsg}>
+//                 {chat.lastMessage || "Thank you very much. I'm glad ..."}
+//               </div>
+//             </div>
 
-//         {/* ACTION */}
-//         {isAccepted ? (
-//           <button onClick={() => navigate("/chat")}>Message</button>
-//         ) : isRequested ? (
-//           <button disabled>Requested</button>
-//         ) : (
-//           <button onClick={() => setShowRequest(true)}>Connect</button>
-//         )}
-//       </div>
-
-//       {/* ABOUT */}
-//       <Section title="About">
-//         <p>{profile.about}</p>
-//       </Section>
-
-//       {/* SKILLS */}
-//       <Section title="Skills & Tools">
-//         <Wrap items={[...(profile.skills || []), ...(profile.tools || [])]} />
-//       </Section>
-
-//       {/* SERVICES */}
-//       <Section title="Services">
-//         <div style={styles.tabs}>
-//           <button
-//             onClick={() => setActiveTab("work")}
-//             className={activeTab === "work" ? "active" : ""}
-//           >
-//             Work
-//           </button>
-//           <button
-//             onClick={() => setActiveTab("24h")}
-//             className={activeTab === "24h" ? "active" : ""}
-//           >
-//             24 Hours
-//           </button>
-//         </div>
-
-//         {(activeTab === "work" ? services : services24h).map((s) => (
-//           <div key={s.id} style={styles.card}>
-//             <h4>{s.title}</h4>
-//             <p>{s.description}</p>
-//             <p>₹ {s.budget_from || s.price}</p>
+//             <div style={styles.rightSideWrap}>
+//               <div style={styles.roleText}>Agents</div>
+//               <div style={styles.tick}>✔✔</div>
+//             </div>
 //           </div>
 //         ))}
-//       </Section>
-
-//       {/* REQUEST POPUP */}
-//       {showRequest && (
-//         <div style={styles.modal}>
-//           <div style={styles.modalBox}>
-//             <h3>Send Request</h3>
-//             <input
-//               placeholder="Project title"
-//               value={projectTitle}
-//               onChange={(e) => setProjectTitle(e.target.value)}
-//             />
-//             <textarea
-//               placeholder="Description"
-//               value={projectDesc}
-//               onChange={(e) => setProjectDesc(e.target.value)}
-//             />
-//             <button onClick={sendRequest}>Submit</button>
-//             <button onClick={() => setShowRequest(false)}>Cancel</button>
-//           </div>
-//         </div>
-//       )}
+//       </div>
 //     </div>
 //   );
 // }
 
-// /* ================= UI HELPERS ================= */
-
-// const Center = ({ children }) => (
-//   <div style={{ padding: 40, textAlign: "center" }}>{children}</div>
-// );
-
-// const Section = ({ title, children }) => (
-//   <div style={styles.section}>
-//     <h3>{title}</h3>
-//     {children}
-//   </div>
-// );
-
-// const Wrap = ({ items }) => (
-//   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-//     {items.map((i, idx) => (
-//       <span key={idx} style={styles.chip}>
-//         {i}
-//       </span>
-//     ))}
-//   </div>
-// );
-
-// /* ================= STYLES ================= */
-
+// // ------------------------------------------------------------
+// // EXACT FIGMA STYLES
+// // ------------------------------------------------------------
 // const styles = {
-//   page: { background: "#fafafa", minHeight: "100vh" },
+//   page: {
+//     width: "100%",
+//     minHeight: "100vh",
+//     background:
+//       "radial-gradient(circle at 10% 10%, #fff7b8 0%, #ffffff 40%, #ffffff 80%)",
+//     padding: "20px 0 40px 0",
+//     fontFamily: "Inter, sans-serif",
+//   },
+
+//   // HEADER
 //   header: {
 //     display: "flex",
-//     justifyContent: "space-between",
-//     padding: 16,
+//     alignItems: "center",
+//     gap: 12,
+//     padding: "0 22px",
+//     marginBottom: 18,
 //   },
-//   profile: {
+
+//   backBtn: {
+//     width: 38,
+//     height: 38,
+//     borderRadius: "12px",
 //     background: "#fff",
-//     margin: 16,
-//     padding: 20,
-//     borderRadius: 16,
-//     textAlign: "center",
-//   },
-//   avatar: {
-//     width: 90,
-//     height: 90,
-//     borderRadius: "50%",
-//     objectFit: "cover",
-//   },
-//   section: {
-//     background: "#fff",
-//     margin: 16,
-//     padding: 16,
-//     borderRadius: 16,
-//   },
-//   tabs: { display: "flex", gap: 10 },
-//   card: {
-//     padding: 12,
-//     border: "1px solid #ddd",
-//     borderRadius: 12,
-//     marginTop: 10,
-//   },
-//   chip: {
-//     padding: "6px 12px",
-//     background: "#FFF7C2",
-//     borderRadius: 20,
-//   },
-//   modal: {
-//     position: "fixed",
-//     inset: 0,
-//     background: "rgba(0,0,0,.4)",
 //     display: "flex",
 //     alignItems: "center",
 //     justifyContent: "center",
+//     boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+//     cursor: "pointer",
+//     fontSize: 20,
 //   },
-//   modalBox: {
+
+//   headerTitle: {
+//     fontSize: 26,
+//     fontWeight: 700,
+//   },
+
+//   // SEARCH BAR
+//   searchWrap: {
+//     padding: "0 22px",
+//     marginBottom: 12,
+//   },
+
+//   searchInput: {
+//     width: "100%",
+//     background: "#ffffff",
+//     border: "none",
+//     outline: "none",
+//     padding: "16px 18px",
+//     borderRadius: 14,
+//     boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
+//     fontSize: 15,
+//   },
+
+//   requestText: {
+//     fontSize: 15,
+//     fontWeight: 600,
+//     color: "#7c3aed",
+//     textAlign: "right",
+//     paddingRight: 28,
+//     marginBottom: 10,
+//   },
+
+//   listCard: {
+//     width: "90%",
+//     margin: "auto",
 //     background: "#fff",
-//     padding: 20,
-//     borderRadius: 16,
-//     width: 300,
+//     borderRadius: 20,
+//     padding: "10px 0",
+//     boxShadow: "0 14px 25px rgba(0,0,0,0.12)",
+//   },
+
+//   chatRow: {
+//     display: "flex",
+//     alignItems: "center",
+//     padding: "16px 18px",
+//     cursor: "pointer",
+//     borderBottom: "1px solid #efefef",
+//   },
+
+//   avatar: {
+//     width: 48,
+//     height: 48,
+//     borderRadius: "50%",
+//     objectFit: "cover",
+//     marginRight: 14,
+//   },
+
+//   chatTextWrap: {
+//     flex: 1,
+//   },
+
+//   chatName: {
+//     fontSize: 16,
+//     fontWeight: 600,
+//   },
+
+//   chatMsg: {
+//     fontSize: 13,
+//     color: "#666",
+//     marginTop: 3,
+//   },
+
+//   rightSideWrap: {
+//     display: "flex",
+//     flexDirection: "column",
+//     alignItems: "flex-end",
+//     gap: 4,
+//   },
+
+//   roleText: {
+//     fontSize: 13,
+//     color: "#999",
+//   },
+
+//   tick: {
+//     fontSize: 16,
+//     color: "#7c3aed",
+//     fontWeight: 700,
 //   },
 // };
 
@@ -482,330 +408,281 @@ export default function FreelancerAcceptedChats() {
 
 
 
-
-
-
-
-
-
-
 // import React, { useEffect, useState } from "react";
+// import { rtdb } from "../../firbase/Firebase";
+// import { ref, onValue } from "firebase/database";
 // import {
 //   getFirestore,
-//   doc,
 //   collection,
 //   query,
 //   where,
 //   onSnapshot,
-//   getDocs,
-//   addDoc,
-//   setDoc,
-//   serverTimestamp,
+//   doc,
+//   getDoc,
 // } from "firebase/firestore";
-// import { useNavigate, useParams } from "react-router-dom";
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import { getAuth } from "firebase/auth";
+// import { useNavigate } from "react-router-dom";
+// import search from "../../assets/search.png"
+// import backarrow from "../../assets/backarrow.png"
+// //search
 
-// /* ======================================================
-//    FREELANCER FULL DETAIL SCREEN – FIXED
-// ====================================================== */
-
-// export default function FreelancerFullDetailScreen() {
-//   const { userId, jobid } = useParams();
-//   const navigate = useNavigate();
-
+// export default function FreelancerAcceptedChats() {
 //   const auth = getAuth();
+//   const user = auth.currentUser;
+//   const navigate = useNavigate();
 //   const db = getFirestore();
 
-//   /* ================= STATE ================= */
-//   const [currentUid, setCurrentUid] = useState(null);
-//   const [profile, setProfile] = useState(null);
-//   const [loading, setLoading] = useState(true);
+//   const [chatList, setChatList] = useState([]);
 
-//   const [isRequested, setIsRequested] = useState(false);
-//   const [isAccepted, setIsAccepted] = useState(false);
-
-//   const [activeTab, setActiveTab] = useState("work");
-//   const [services, setServices] = useState([]);
-//   const [services24h, setServices24h] = useState([]);
-
-//   const [showRequest, setShowRequest] = useState(false);
-//   const [projectTitle, setProjectTitle] = useState("");
-//   const [projectDesc, setProjectDesc] = useState("");
-
-//   /* ================= AUTH ================= */
 //   useEffect(() => {
-//     const unsub = onAuthStateChanged(auth, (u) => {
-//       setCurrentUid(u ? u.uid : null);
-//     });
-//     return () => unsub();
-//   }, []);
+//     if (!user) return;
 
-//   /* ================= LOAD PROFILE ================= */
-//   useEffect(() => {
-//     if (!userId) {
-//       setLoading(false);
-//       return;
-//     }
-
-//     const unsub = onSnapshot(
-//       doc(db, "users", userId),
-//       (snap) => {
-//         setProfile(snap.exists() ? snap.data() : null);
-//         setLoading(false);
-//       },
-//       (err) => {
-//         console.error("Profile load error:", err);
-//         setLoading(false);
-//       }
+//     const notifRef = collection(db, "notifications");
+//     const qNotif = query(
+//       notifRef,
+//       where("freelancerId", "==", user.uid),
+//       where("read", "==", true)
 //     );
 
-//     return () => unsub();
-//   }, [userId]);
+//     const unsub = onSnapshot(qNotif, (snap) => {
+//       const acceptedClients = snap.docs.map((d) => d.data().clientUid);
 
-//   /* ================= CHECK REQUESTED ================= */
-//   useEffect(() => {
-//     if (!currentUid || !userId) return;
+//       const userChatsRef = ref(rtdb, `userChats/${user.uid}`);
 
-//     const q = query(
-//       collection(db, "collaboration_requests"),
-//       where("clientId", "==", currentUid),
-//       where("freelancerId", "==", userId),
-//       where("status", "==", "sent")
-//     );
+//       onValue(userChatsRef, async (chatsSnap) => {
+//         const val = chatsSnap.val() || {};
 
-//     getDocs(q).then((snap) => {
-//       if (!snap.empty) setIsRequested(true);
-//     });
-//   }, [currentUid, userId]);
+//         const filtered = await Promise.all(
+//           Object.entries(val)
+//             .filter(([_, chatData]) =>
+//               acceptedClients.includes(chatData.withUid)
+//             )
+//             .map(async ([chatId, chatData]) => {
+//               const clientRef = doc(db, "users", chatData.withUid);
+//               const clientSnap = await getDoc(clientRef);
 
-//   /* ================= CHECK ACCEPTED ================= */
-//   useEffect(() => {
-//     if (!currentUid || !userId || !jobid) return;
+//               const clientData = clientSnap.exists() ? clientSnap.data() : {};
 
-//     const q = query(
-//       collection(db, "accepted_jobs"),
-//       where("clientId", "==", currentUid),
-//       where("freelancerId", "==", userId),
-//       where("jobId", "==", jobid)
-//     );
+//               const clientName =
+//                 clientData.firstName && clientData.lastName
+//                   ? `${clientData.firstName} ${clientData.lastName}`
+//                   : "Agents";
 
-//     getDocs(q).then((snap) => {
-//       if (!snap.empty) setIsAccepted(true);
-//     });
-//   }, [currentUid, userId, jobid]);
+//               return {
+//                 chatId,
+//                 ...chatData,
+//                 clientName,
+//                 clientImg: clientData.profileImage || null,
+//               };
+//             })
+//         );
 
-//   /* ================= LOAD SERVICES ================= */
-//   useEffect(() => {
-//     if (!userId) return;
-
-//     const unsub1 = onSnapshot(
-//       collection(db, "users", userId, "services"),
-//       (snap) =>
-//         setServices(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
-//     );
-
-//     const unsub2 = onSnapshot(
-//       collection(db, "users", userId, "services_24h"),
-//       (snap) =>
-//         setServices24h(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
-//     );
-
-//     return () => {
-//       unsub1();
-//       unsub2();
-//     };
-//   }, [userId]);
-
-//   /* ================= SEND REQUEST ================= */
-//   async function sendRequest() {
-//     if (!currentUid || !userId) return;
-
-//     await addDoc(collection(db, "collaboration_requests"), {
-//       clientId: currentUid,
-//       freelancerId: userId,
-//       title: projectTitle,
-//       description: projectDesc,
-//       status: "sent",
-//       timestamp: serverTimestamp(),
+//         setChatList(filtered);
+//       });
 //     });
 
-//     setIsRequested(true);
-//     setShowRequest(false);
-
-//     navigate("/chat", {
-//       state: {
-//         currentUid,
-//         otherUid: userId,
-//         initialMessage: projectTitle,
-//       },
-//     });
-//   }
-
-//   /* ================= BLOCK USER ================= */
-//   async function blockUser() {
-//     if (!currentUid || !userId) return;
-
-//     await setDoc(doc(db, "blocked_users", `${currentUid}_${userId}`), {
-//       blockedBy: currentUid,
-//       blockedUserId: userId,
-//       blockedAt: serverTimestamp(),
-//     });
-
-//     navigate(-1);
-//   }
-
-//   /* ================= RENDER ================= */
-//   if (loading) return <Center>Loading…</Center>;
-//   if (!profile) return <Center>User not found</Center>;
+//     return unsub;
+//   }, [user]);
 
 //   return (
 //     <div style={styles.page}>
+//       {/* HEADER */}
 //       <div style={styles.header}>
-//         <button onClick={() => navigate(-1)}>←</button>
-//         <button onClick={blockUser}>🚩</button>
+//         <span style={styles.backBtn} onClick={() => navigate(-1)}>
+//           <img src={backarrow} style={{width:"20px"}} alt="backarrow" />
+//         </span>
+//         <span style={styles.headerTitle}>Message</span>
 //       </div>
 
-//       <div style={styles.profile}>
-//         <img
-//           src={profile.profileImage || "/placeholder.png"}
-//           alt=""
-//           style={styles.avatar}
-//         />
-//         <h2>
-//           {profile.firstName} {profile.lastName}
-//         </h2>
-//         <p>{profile.professional_title}</p>
-
-//         {isAccepted ? (
-//           <button onClick={() => navigate("/chat")}>Message</button>
-//         ) : isRequested ? (
-//           <button disabled>Requested</button>
-//         ) : (
-//           <button onClick={() => setShowRequest(true)}>Connect</button>
-//         )}
+//       {/* SEARCH */}
+//       <div style={styles.searchWrap}>
+//         <table style={{backgroundColor:"#FEFED7",width:"300",height:"10"}}>
+//           <tr>
+//             <td  style={styles.searchBox}>
+//               <img  src={search} style={{width:"20px"}} alt="search" />
+//             </td>
+//             <td>
+//               <input placeholder="Search" style={styles.searchInput} />
+//             </td>
+//           </tr>
+//         </table>
 //       </div>
 
-//       <Section title="About">
-//         <p>{profile.about}</p>
-//       </Section>
 
-//       <Section title="Skills & Tools">
-//         <Wrap items={[...(profile.skills || []), ...(profile.tools || [])]} />
-//       </Section>
 
-//       <Section title="Services">
-//         <div style={styles.tabs}>
-//           <button onClick={() => setActiveTab("work")}>Work</button>
-//           <button onClick={() => setActiveTab("24h")}>24 Hours</button>
-//         </div>
+//       {/* REQUEST */}
+//       <div style={styles.requestText}>Request ({chatList.length})</div>
 
-//         {(activeTab === "work" ? services : services24h).map((s) => (
-//           <div key={s.id} style={styles.card}>
-//             <h4>{s.title}</h4>
-//             <p>{s.description}</p>
-//             <p>₹ {s.budget_from || s.price}</p>
+//       {/* CARD */}
+//       <div style={styles.listCard}>
+//         {chatList.map((chat) => (
+//           <div
+//             key={chat.chatId}
+//             onClick={() =>
+//               navigate("/chat", {
+//                 state: { currentUid: user.uid, otherUid: chat.withUid },
+//               })
+//             }
+//             style={styles.chatRow}
+//           >
+//             <img
+//               src={chat.clientImg || "/placeholder.png"}
+//               alt=""
+//               style={styles.avatar}
+//             />
+
+//             <div style={styles.chatTextWrap}>
+//               <div style={styles.chatName}>{chat.clientName}</div>
+//               <div style={styles.chatMsg}>
+//                 {chat.lastMessage || "Thank you very much. I'm glad ..."}
+//               </div>
+//             </div>
+
+//             <div style={styles.rightSideWrap}>
+//               <div style={styles.roleText}>Agents</div>
+//               <div style={styles.tick}>✔✔</div>
+//             </div>
 //           </div>
 //         ))}
-//       </Section>
-
-//       {showRequest && (
-//         <div style={styles.modal}>
-//           <div style={styles.modalBox}>
-//             <h3>Send Request</h3>
-//             <input
-//               placeholder="Project title"
-//               value={projectTitle}
-//               onChange={(e) => setProjectTitle(e.target.value)}
-//             />
-//             <textarea
-//               placeholder="Description"
-//               value={projectDesc}
-//               onChange={(e) => setProjectDesc(e.target.value)}
-//             />
-//             <button onClick={sendRequest}>Submit</button>
-//             <button onClick={() => setShowRequest(false)}>Cancel</button>
-//           </div>
-//         </div>
-//       )}
+//       </div>
 //     </div>
 //   );
 // }
 
-// /* ================= UI HELPERS ================= */
-
-// const Center = ({ children }) => (
-//   <div style={{ padding: 40, textAlign: "center" }}>{children}</div>
-// );
-
-// const Section = ({ title, children }) => (
-//   <div style={styles.section}>
-//     <h3>{title}</h3>
-//     {children}
-//   </div>
-// );
-
-// const Wrap = ({ items }) => (
-//   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-//     {items.map((i, idx) => (
-//       <span key={idx} style={styles.chip}>
-//         {i}
-//       </span>
-//     ))}
-//   </div>
-// );
-
-// /* ================= STYLES ================= */
-
+// // --------------------------------------------------
+// // EXACT FIGMA STYLE
+// // --------------------------------------------------
 // const styles = {
-//   page: { background: "#fafafa", minHeight: "100vh" },
+//   page: {
+//     width: "100%",
+//     minHeight: "100vh",
+//     padding: "20px 0 40px 0",
+//     fontFamily: "Inter, sans-serif",
+//     },
+
+//   // Header
 //   header: {
 //     display: "flex",
-//     justifyContent: "space-between",
-//     padding: 16,
+//     alignItems: "center",
+//     gap: 14,
+//     padding: "0 24px",
+//     marginBottom: 14,
 //   },
-//   profile: {
+
+//   backBtn: {
+//     width: 40,
+//     height: 40,
+//     borderRadius: 14,
 //     background: "#fff",
-//     margin: 16,
-//     padding: 20,
-//     borderRadius: 16,
-//     textAlign: "center",
-//   },
-//   avatar: {
-//     width: 90,
-//     height: 90,
-//     borderRadius: "50%",
-//     objectFit: "cover",
-//   },
-//   section: {
-//     background: "#fff",
-//     margin: 16,
-//     padding: 16,
-//     borderRadius: 16,
-//   },
-//   tabs: { display: "flex", gap: 10 },
-//   card: {
-//     padding: 12,
-//     border: "1px solid #ddd",
-//     borderRadius: 12,
-//     marginTop: 10,
-//   },
-//   chip: {
-//     padding: "6px 12px",
-//     background: "#FFF7C2",
-//     borderRadius: 20,
-//   },
-//   modal: {
-//     position: "fixed",
-//     inset: 0,
-//     background: "rgba(0,0,0,.4)",
 //     display: "flex",
 //     alignItems: "center",
 //     justifyContent: "center",
+//     fontSize: 20,
+//     cursor: "pointer",
+//     // boxShadow: "0 3px 10px rgba(0,0,0,0.18)",
 //   },
-//   modalBox: {
-//     background: "#fff",
-//     padding: 20,
+
+//   headerTitle: {
+//     fontSize: 36,
+//     fontWeight: 400,
+//     letterSpacing: -0.5,
+//   },
+
+//   // Search
+//   searchWrap: {
+//     padding: "0 24px",
+//     marginBottom: 12,
+    
+//   },
+
+//   searchBox: {
+//     background: "gray",
 //     borderRadius: 16,
-//     width: 300,
+//     display: "flex",
+//     alignItems: "center",
+//     padding: "4px 16px",
+//     boxShadow: "0 12px 25px rgba(0,0,0,0.1)",
+//   },
+
+//   searchIcon: {
+//     fontSize: 18,
+//     opacity: 0.5,
+//     marginRight: 12,
+//   },
+
+//   searchInput: {
+//     background: "pink",
+//     flex: 1,
+//     border: "none",
+//     outline: "none",
+//     fontSize: 15,
+//   },
+
+//   requestText: {
+//     textAlign: "right",
+//     paddingRight: 30,
+//     color: "#8a3df0",
+//     fontSize: 15,
+//     fontWeight: 600,
+//     marginBottom: 10,
+//   },
+
+//   listCard: {
+//     width: "90%",
+//     margin: "auto",
+//     background: "#ffffff",
+//     borderRadius: 24,
+//     boxShadow: "0 16px 40px rgba(0,0,0,0.15)",
+//     padding: "6px 0",
+//   },
+
+//   chatRow: {
+//     display: "flex",
+//     alignItems: "center",
+//     padding: "18px 20px",
+//     cursor: "pointer",
+//     borderBottom: "1px solid #f0f0f0",
+//   },
+
+//   avatar: {
+//     width: 52,
+//     height: 52,
+//     borderRadius: "50%",
+//     objectFit: "cover",
+//     marginRight: 16,
+//   },
+
+//   chatTextWrap: {
+//     flex: 1,
+//   },
+
+//   chatName: {
+//     fontSize: 16.5,
+//     fontWeight: 600,
+//     marginBottom: 2,
+//   },
+
+//   chatMsg: {
+//     fontSize: 13.5,
+//     color: "#6a6a6a",
+//     whiteSpace: "nowrap",
+//     overflow: "hidden",
+//     textOverflow: "ellipsis",
+//   },
+
+//   rightSideWrap: {
+//     textAlign: "right",
+//   },
+
+//   roleText: {
+//     fontSize: 13,
+//     color: "#a7a7a7",
+//     marginBottom: 4,
+//   },
+
+//   tick: {
+//     color: "#7c3aed",
+//     fontSize: 17,
+//     fontWeight: 700,
 //   },
 // };

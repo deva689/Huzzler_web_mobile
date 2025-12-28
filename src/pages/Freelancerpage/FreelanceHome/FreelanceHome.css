@@ -1,4 +1,5 @@
 
+
 /* FreelanceHome.css
    Styles crafted to match the uploaded screenshot.
    Tweak variables below for color adjustments.
@@ -193,10 +194,10 @@ font-weight: 400;
 
 .fh-hero-card.secondary{
   background: #f7f5f5;
-  
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   color: #111;
   cursor: pointer;
-padding: 22px;
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 /* primary hero content tweak */
@@ -213,7 +214,7 @@ padding: 22px;
 }
 /* main content */
 .fh-main{
-  width:99%;
+  width:100%;
   max-width: var(--max-width);
   display:flex;
   flex-direction:column;
@@ -254,20 +255,14 @@ padding: 22px;
 }
 
 .job-card{
-
+  margin-left: 10px;
   background:var(--card-bg);
   border-radius:14px;
   padding:18px;
-  /* box-shadow: 0 20px 30px rgba(2,6,23,0.08); */
+  box-shadow: 0 20px 30px rgba(2,6,23,0.08);
   border:1px solid rgba(0,0,0,0.03);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
   cursor:pointer;
-
-  width: 100%;
-  max-width: 100%;
-  box-shadow: 0 4px 12px  rgba(0,0,0,0.08), 
-              0 2px 6px rgba(0,0,0,0.04);
-
 }
 
 .job-card:hover{
@@ -516,8 +511,6 @@ padding: 22px;
 /* Stop unwanted horizontal scrolling */
 .fh-page {
   overflow-x: hidden !important;
-  overflow-y: auto;        /* 🔥 allow vertical scrolling */
-  min-height: 100vh;       /* ensure page can scroll */
 }
 
 /* Ensure job cards never exceed screen width */
@@ -693,7 +686,6 @@ padding: 22px;
     right: -6px;
     font-size: 10px;
   }
-  
 }
 @media (max-width: 1024px) {
   .fh-header > div[style*="1216px"] {
@@ -709,118 +701,8 @@ padding: 22px;
     transition: none !important;
   }
 }
-
-/* Desktop (default behavior stays the same) */
-.freelance-wrapper {
-
-  overflow-y: auto;        /* 🔥 allow vertical scroll */
-  overflow-x: hidden;
-  min-height: 100vh;
-
-
-}
-
-/* Mobile view */
-@media (max-width: 768px) {
-   body, html {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: auto;
-  }
-  .freelance-wrapper {
-    margin-left: 0 !important;
-    padding: 22px;
-  }
- 
-}
-
-
-/* ===============================
-   🔝 GLOBAL TOP-RIGHT ICONS
-   (NOT FIXED – ABSOLUTE)
-   =============================== */
-
-/* Parent wrapper must be relative */
-.freelance-wrapper {
-  position: relative;      /* 🔥 anchor for icons */
-}
-
-/* Icons container */
-.fh-header-right {
-  position: absolute;      /* 🔥 NOT fixed */
-  top: 16px;
-  right: 20px;
-
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  z-index: 1000;
-}
-
-/* Icon images */
-.fh-header-right img {
-  width: 31px;
-  height: 29px;
-  cursor: pointer;
-  object-fit: contain;
-}
-
-/* Avatar */
-.fh-avatar img {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ddd;
-}
-
-/* Notification badge */
-.notif-count {
-  position: absolute;
-  top: -6px;
-  right: 52px;
-  background: red;
-  color: white;
-  font-size: 11px;
-  padding: 2px 6px;
-  border-radius: 50%;
-  font-weight: 600;
-}
-
-/* ===============================
-   📱 RESPONSIVE
-   =============================== */
-
 @media (max-width: 768px) {
   .fh-header-right {
-    top: 72px;
-    right: 14px;
-    gap: 12px;
+    display: none;
   }
-
-  .fh-header-right img {
-    width: 26px;
-    height: 26px;
-  }
-
-  .fh-avatar img {
-    width: 32px;
-    height: 32px;
-  }
-
-  .notif-count {
-    top: -5px;
-    right: 44px;
-    font-size: 10px;
-  }
-}
-
-/* ===============================
-   🚫 REMOVE OLD OVERRIDES
-   =============================== */
-
-/* Ensure nothing forces fixed or static */
-.fh-header-right {
-  position: absolute !important;
 }

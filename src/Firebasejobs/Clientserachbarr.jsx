@@ -1,7 +1,7 @@
+
+
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Categories from "../assets/categories.jpeg";
-
 import {
     collection,
     query,
@@ -604,8 +604,8 @@ export default function ClientHomeUI() {
           flex: 0 0 auto;
           background: linear-gradient(135deg, #6a11cb, #2575fc);
           color: white;
-          padding: 36px 20px;
-          border-radius: 15px;
+          padding: 16px 20px;
+          border-radius: 14px;
           font-size: 14px;
           font-weight: 600;
           min-width: 160px;
@@ -619,69 +619,9 @@ export default function ClientHomeUI() {
             font-size: 13px;
           }
         }
-          /* ================= HEADER RIGHT ICONS ================= */
-
-.fh-header-right {
-  display: flex;
-  align-items: center;
-  gap: 16px; /* spacing between 3 icons */
-  position: relative;
-}
-
-/* ICON BUTTONS */
-.icon-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: none;
-  background: #f3f3f3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: relative;
-  font-size: 20px;
-}
-
-.icon-btn:hover {
-  background: #e5e5e5;
-}
-
-/* NOTIFICATION DOT */
-.notif-btn {
-  position: relative;
-}
-
-.notif-dot {
-  width: 8px;
-  height: 8px;
-  background: red;
-  border-radius: 50%;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-}
-
-/* PROFILE AVATAR */
-.fh-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  overflow: hidden;
-  cursor: pointer;
- 
-}
-
-.fh-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
         `}</style>
 
     </div>
 );
 
 }
-

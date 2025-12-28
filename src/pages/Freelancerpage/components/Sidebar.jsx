@@ -1,4 +1,3 @@
-
 // import React, { useEffect, useState } from "react"; 
 // import logo from "../../../assets/logo.png";
 // import myservices from "../../../assets/MyServices.png";
@@ -115,8 +114,8 @@
 //           </button>
 
 //           <button
-//             className={`hz-menu-btn ${isActive("/freelance-dashboard/freelancesidecategorypage") ? "active-btn" : ""}`}
-//             onClick={() => handleMobileNav("/freelance-dashboard/freelancesidecategorypage")}
+//             className={`hz-menu-btn ${isActive("/freelance-dashboard/freelancebrowesproject") ? "active-btn" : ""}`}
+//             onClick={() => handleMobileNav("/freelance-dashboard/freelancebrowesproject")}
 //           >
 //             <Search size={18} className="icon" />
 //             {!collapsed && "Browse Projects"}
@@ -404,7 +403,7 @@
 //             background: none;
 //             border: none;
 //             cursor: pointer;
-//             margin-right:50px;
+//             margin-right:10px;
 //           }
 
 //           body {
@@ -421,13 +420,6 @@
 import React, { useEffect, useState } from "react"; 
 import logo from "../../../assets/logo.png";
 import myservices from "../../../assets/MyServices.png";
-import myjobs from "../../../assets/myjobs.png";
-import search from "../../../assets/search.png";
-import profile from "../../../assets/profile.png";
-import settings from "../../../assets/settings.png";
-import saved from "../../../assets/save2.png";
-import home from "../../../assets/Home.png";
-import signout from "../../../assets/signout.png";
 
 import {
   Home,
@@ -522,7 +514,7 @@ export default function FreelanceSideBar() {
         {!collapsed ? (
           <div className="hz-logo-card">
             <img src={logo} className="hz-logo-img" />
-            <span className="hz-logo-text">HUZZLER</span>
+            <span className="hz-logo-text">HUZZLER..</span>
           </div>
         ) : (
           <div className="hz-logo-small-wrap">
@@ -536,15 +528,15 @@ export default function FreelanceSideBar() {
             className={`hz-menu-btn ${isActive("/freelance-dashboard") ? "active-btn" : ""}`}
             onClick={() => handleMobileNav("/freelance-dashboard")}
           >
-               <img src={home} width={18} className="icon" />
+            <Home size={18} className="icon" />
             {!collapsed && "Home"}
           </button>
 
           <button
-            className={`hz-menu-btn ${isActive("/freelance-dashboard/freelancesidecategorypage") ? "active-btn" : ""}`}
-            onClick={() => handleMobileNav("/freelance-dashboard/freelancesidecategorypage")}
+            className={`hz-menu-btn ${isActive("/freelance-dashboard/freelancebrowesproject") ? "active-btn" : ""}`}
+            onClick={() => handleMobileNav("/freelance-dashboard/freelancebrowesproject")}
           >
-          <img src={search} width={18} className="icon" />
+            <Search size={18} className="icon" />
             {!collapsed && "Browse Projects"}
           </button>
 
@@ -552,7 +544,7 @@ export default function FreelanceSideBar() {
             className={`hz-menu-btn ${isActive("/freelance-dashboard/freelancermyworks") ? "active-btn" : ""}`}
             onClick={() => handleMobileNav("/freelance-dashboard/freelancermyworks")}
           >
-           <img src={myjobs} width={18} className="icon" />
+            <Briefcase size={18} className="icon" />
             {!collapsed && "My Jobs"}
           </button>
 
@@ -568,7 +560,7 @@ export default function FreelanceSideBar() {
             className={`hz-menu-btn ${isActive("/freelance-dashboard/saved") ? "active-btn" : ""}`}
             onClick={() => handleMobileNav("/freelance-dashboard/saved")}
           >
-           <img src={saved} width={18} className="icon" />
+            <Bookmark size={18} className="icon" />
             {!collapsed && "Saved"}
           </button>
 
@@ -577,7 +569,7 @@ export default function FreelanceSideBar() {
               className={`hz-menu-btn ${isActive("/freelance-dashboard/accountfreelancer") ? "active-btn" : ""}`}
               onClick={() => handleMobileNav("/freelance-dashboard/accountfreelancer")}
             >
-             <img src={profile} width={18} className="icon" />
+              <User size={18} className="icon" />
               {!collapsed && "Profile"}
             </button>
 
@@ -585,7 +577,7 @@ export default function FreelanceSideBar() {
               className={`hz-menu-btn ${isActive("/freelance-dashboard/settings") ? "active-btn" : ""}`}
               onClick={() => handleMobileNav("/freelance-dashboard/settings")}
             >
-               <img src={settings} width={18} className="icon" />
+              <Settings size={18} className="icon" />
               {!collapsed && "Settings"}
             </button>
 
@@ -593,7 +585,7 @@ export default function FreelanceSideBar() {
               className="hz-menu-btn"
               onClick={() => handleMobileNav("/logout")}
             >
-                 <img src={signout} width={18} className="icon" />
+              <LogOut size={18} className="icon" />
               {!collapsed && "Logout"}
             </button>
           </div>
@@ -618,257 +610,225 @@ export default function FreelanceSideBar() {
 
       {/* CSS */}
       <style>{`
-     .hz-sidebar {
-  width: 300px;
-  height: 100vh;
-  background: #e8e8e8;
-  position: fixed;
-  left: 0;
-  top: 0;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  transition: 0.3s ease;
-  font-family: "Rubik", sans-serif;
-  z-index: 999;
-}
+        .hz-sidebar {
+          width: 300px;
+          height: 100vh;
+          background: #e8e8e8;
+          position: fixed;
+          left: 0;
+          top: 0;
+          padding: 18px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          transition: 0.3s ease;
+          font-family: 'Rubik', sans-serif;
+          z-index: 999;
+        }
 
-.hz-sidebar.collapsed {
-  width: 80px;
-}
+        .hz-sidebar.collapsed {
+          width: 80px;
+        }
 
-/* COLLAPSE BUTTON */
-.hz-collapse-btn {
-  position: absolute;
-  top: 60px;
-  left: 290px;
-  width: 32px;
-  height: 42px;
-  border-radius: 10px;
-  background: #a855f7;
-  border: none;
-  color: white;
-  cursor: pointer;
-  transition: left 0.3s ease;
-}
+        .hz-collapse-btn {
+          position: absolute;
+          top: 50px;
+          left: 320px;
+          width: 32px;
+          height: 32px;
+          border-radius: 10px;
+          background: #a855f7;
+          border: none;
+          color: white;
+          cursor: pointer;
+          transition: left 0.3s ease;
+        }
 
-.hz-sidebar.collapsed .hz-collapse-btn {
-  left: 70px;
-   top: 100px;
-}
+        .hz-sidebar.collapsed .hz-collapse-btn {
+          left: 100px;
+        }
 
-/* LOGO */
-.hz-logo-card {
-  width: 240px;
-  height: 90px;
-  background: #a855f7;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  padding: 10px 18px;
-  gap: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 30px;
-  margin-bottom: 40px;
-}
+        .hz-logo-card {
+          width: 80%;
+          height: 75px;
+          background: #a855f7;
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          padding: 10px 18px;
+          gap: 16px;
+          box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+          margin-top:-10px;
+        }
 
-.hz-logo-img {
-  width: 46px;
-  height: 46px;
-}
+        .hz-logo-img {
+          width: 46px;
+          height: 46px;
+        }
 
-.hz-logo-text {
-  font-size: 22px;
-  font-weight: 600;
-  color: white;
-}
+        .hz-logo-text {
+          font-size: 22px;
+          font-weight: 600;
+          color: white;
+        }
 
-.hz-logo-small-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  margin-bottom: 40px;
-}
+        .hz-logo-img-small {
+          width: 55px;
+          height: 55px;
+          background: white;
+          border-radius: 14px;
+          border: 2px solid #a855f7;
+          padding: 4px;
+        }
 
-.hz-logo-img-small {
-  width: 55px;
-  height: 55px;
+        .hz-logo-small-wrap {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 10px;
+        }
 
-  border-radius: 14px;
-  border: 2px solid #a855f7;
-  padding: 4px;
-}
+        .hz-menu {
+          margin-top: 5px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
 
-/* MENU */
-.hz-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1; /* IMPORTANT */
-}
+        .hz-menu-btn {
+          height: 40px;
+          width: 90%;
+          border: none;
+          border-radius: 14px;
+          background: none;
+          display: flex;
+          align-items: center;
+          padding: 0 16px;
+          gap: 12px;
+          cursor: pointer;
+          transition: 0.25s ease;
+          font-size: 15px;
+          color: #222;
+        }
 
-.hz-menu-btn {
-  height: 40px;
-  width: 90%;
-  border: none;
-  border-radius: 14px;
-  background: none;
-  display: flex;
-  align-items: center;
-  padding: 25px 16px;
-  gap: 12px;
-  cursor: pointer;
-  transition: 0.25s ease;
-  font-size: 15px;
-  color: #222;
-}
+        .hz-menu-btn:hover {
+          background: #c084fc;
+          color: white;
+        }
 
-.hz-menu-btn img {
-  width: 18px;
-  min-width: 18px;
-}
+        .hz-menu-btn:hover .icon,
+        .hz-menu-btn:hover img {
+          filter: brightness(0) invert(1);
+        }
 
-/* HOVER */
-.hz-menu-btn:hover {
-  background: #c084fc;
-  color: white;
-}
+        .active-btn {
+          background: #a855f7 !important;
+          color: white !important;
+        }
 
-.hz-menu-btn:hover img {
-  filter: brightness(0) invert(1);
-}
+        .active-btn .icon,
+        .active-btn img {
+          filter: brightness(0) invert(1);
+        }
 
-/* ACTIVE */
-.active-btn {
-  background: #a855f7 !important;
-  color: white !important;
-}
+        .hz-sidebar.collapsed .hz-menu-btn {
+          justify-content: center;
+          padding: 0;
+        }
 
-.active-btn img {
-  filter: brightness(0) invert(1);
-}
+        .hz-user-footer {
+          height: 70px;
+          background: white;
+          border-radius: 0;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+          width: calc(100% + 6px);
+          margin-left: -18px;
+          display: flex;
+          align-items: center;
+          padding: 10px 15px;
+          gap: 12px;
+          margin-bottom: 25px;
+        }
 
-/* COLLAPSED MENU (NO SPACING CHANGE) */
-.hz-sidebar.collapsed .hz-menu-btn {
-  justify-content: center;
-  padding: 25px 16px;
-}
+        .hz-user-avatar {
+          width: 44px;
+          height: 44px;
+          background: #a855f7;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          font-weight: 600;
+        }
 
-/* BOTTOM MENU */
-.hz-bottom-menu {
-  margin-top: auto; /* KEY FIX */
-  padding-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+        .hz-user-name {
+          font-size: 15px;
+          font-weight: 600;
+        }
 
-/* USER FOOTER */
-.hz-user-footer {
-  height: 70px;
-  background: white;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  width: calc(100% + 35px);
-  margin-left: -18px;
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  gap: 12px;
-  margin-bottom: 25px;
-}
+        .hz-user-role {
+          font-size: 12px;
+          color: #666;
+        }
 
-.hz-user-avatar {
-  width: 44px;
-  height: 44px;
-  background: #a855f7;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: 600;
-}
+        .hz-bottom-menu {
+          margin-top: auto;
+          padding-top: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
 
-.hz-user-name {
-  font-size: 15px;
-  font-weight: 600;
-margin-top:10px;
-}
+        /* MOBILE TOPBAR */
+        .mobile-topbar {
+          display: none;
+        }
 
-.hz-user-role {
-  font-size: 12px;
-  color: #666;
- 
-  margin-top:-20px;
- 
-}
+        @media (max-width: 768px) {
+          .hz-sidebar {
+            left: -320px;
+            transition: 0.35s ease;
+          }
 
-/* MOBILE TOPBAR */
-.mobile-topbar {
-  display: none;
-}
+          .hz-sidebar.mobile-show {
+            left: 0;
+            width: 100%;
+            margin-top:8     0px;
+          }
 
-@media (max-width: 768px) {
-*{
-overflow:hidden;
-}
-  .hz-sidebar {
-  top:30px;
-    left: -320px;
-  }
+          .hz-collapse-btn {
+            display: none;
+          }
 
-  .hz-sidebar.mobile-show {
- height:100%;
-    left: 0;
-    width: 100%;
-  }
+          .mobile-topbar {
+            display: flex;
+            width: 100%;
+            height: 60px;
+            background: white;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            border-bottom: 1px solid #ddd;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+          }
 
-  .hz-collapse-btn {
-    display: none;
-  }
+          .mobile-logo {
+            width: 45px;
+          }
 
-  .mobile-topbar {
-    display: flex;
-    width: 100%;
-    height: 60px;
-    background: white;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 15px;
-    border-bottom: 1px solid #ddd;
-    position: fixed;
-    top: 0;
-    z-index: 1000;
-  }
+          .mobile-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right:50px;
+          }
 
-  .mobile-logo {
-    width: 45px;
-  
-  }
-
-  .mobile-menu-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
- /* LOGO */
-.hz-logo-card {
-  width: 360px;
-  height: 90px;
-  background: #a855f7;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  padding: 10px 18px;
-  gap: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 30px;
-  margin-bottom: 40px;
- 
-}
-
-}
-
+          body {
+            padding-left: 0 !important;
+          }
+        }
       `}</style>
     </>
   );

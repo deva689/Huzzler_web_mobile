@@ -1,4 +1,3 @@
-
 // import {
 //   Home,
 //   Search,
@@ -6,8 +5,6 @@
 //   User,
 //   Settings,
 //   LogOut,
-//   Menu,
-//   X,
 // } from "lucide-react";
 
 // import { useNavigate } from "react-router-dom";
@@ -25,8 +22,6 @@
 //   const [collapsed, setCollapsed] = useState(
 //     localStorage.getItem("sidebar-collapsed") === "true"
 //   );
-
-//   const [mobileOpen, setMobileOpen] = useState(false);
 
 //   const [activeTab, setActiveTab] = useState("home");
 
@@ -59,37 +54,21 @@
 //     window.dispatchEvent(new CustomEvent("sidebar-toggle", { detail: next }));
 //   }
 
-//   function handleNav(path, name) {
+//   function goTo(path, name) {
 //     setActiveTab(name);
 //     navigate(path);
-//     setMobileOpen(false); // ✅ close sidebar on mobile click
 //   }
 
 //   return (
 //     <>
-//       {/* ========== MOBILE TOPBAR (NEW) ========== */}
-//       <div className="mobile-topbar">
-//         <img src={logo} className="mobile-logo" />
-//         <button
-//           className="mobile-menu-btn"
-//           onClick={() => setMobileOpen(!mobileOpen)}
-//         >
-//           {mobileOpen ? <X size={26} /> : <Menu size={26} />}
-//         </button>
-//       </div>
-
-//       {/* ========== SIDEBAR ========== */}
-//       <aside
-//         className={`hz-sidebar ${collapsed ? "collapsed" : ""} ${
-//           mobileOpen ? "mobile-show" : ""
-//         }`}
-//       >
-//         {/* TOGGLE BUTTON (DESKTOP SAME) */}
+//       <aside className={`hz-sidebar ${collapsed ? "collapsed" : ""}`}>
+        
+//         {/* TOGGLE BUTTON */}
 //         <button className="hz-collapse-btn" onClick={toggleSidebar}>
 //           {collapsed ? ">" : "<"}
 //         </button>
 
-//         {/* LOGO */}
+//         {/* TOP LOGO CARD */}
 //         {!collapsed ? (
 //           <div className="hz-logo-card">
 //             <img src={logo} className="hz-logo-img" />
@@ -103,11 +82,10 @@
 
 //         {/* MENU */}
 //         <nav className="hz-menu">
+
 //           <button
 //             className={`hz-menu-btn ${activeTab === "home" ? "active-btn" : ""}`}
-//             onClick={() =>
-//               handleNav("/client-dashbroad2/clientserachbar", "home")
-//             }
+//             onClick={() => goTo("/client-dashbroad2/clientserachbar", "home")}
 //           >
 //             <Home size={18} className="icon" />
 //             {!collapsed && "Home"}
@@ -115,9 +93,7 @@
 
 //           <button
 //             className={`hz-menu-btn ${activeTab === "browse" ? "active-btn" : ""}`}
-//             onClick={() =>
-//               handleNav("/client-dashbroad2/ClientSideCategories", "browse")
-//             }
+//             onClick={() => goTo("/client-dashbroad2/clientcategories", "browse")}
 //           >
 //             <Search size={18} className="icon" />
 //             {!collapsed && "Browse Projects"}
@@ -125,21 +101,15 @@
 
 //           <button
 //             className={`hz-menu-btn ${activeTab === "jobs" ? "active-btn" : ""}`}
-//             onClick={() =>
-//               handleNav("/client-dashbroad2/AddJobScreen", "jobs")
-//             }
+//             onClick={() => goTo("/client-dashbroad2/AddJobScreen", "jobs")}
 //           >
 //             <Briefcase size={18} className="icon" />
 //             {!collapsed && "Job Posted"}
 //           </button>
 
 //           <button
-//             className={`hz-menu-btn ${
-//               activeTab === "service" ? "active-btn" : ""
-//             }`}
-//             onClick={() =>
-//               handleNav("/client-dashbroad2/my-hires", "service")
-//             }
+//             className={`hz-menu-btn ${activeTab === "service" ? "active-btn" : ""}`}
+//             onClick={() => goTo("/client-dashbroad2/my-hires", "service")}
 //           >
 //             <img src={hire} width={18} className="icon" />
 //             {!collapsed && "Hire"}
@@ -147,9 +117,7 @@
 
 //           <button
 //             className={`hz-menu-btn ${activeTab === "saved" ? "active-btn" : ""}`}
-//             onClick={() =>
-//               handleNav("/client-dashbroad2/Clientsaved", "saved")
-//             }
+//             onClick={() => goTo("/client-dashbroad2/Clientsaved", "saved")}
 //           >
 //             <img src={save2} width={18} className="icon" />
 //             {!collapsed && "Saved"}
@@ -157,33 +125,25 @@
 
 //           <div className="hz-bottom-menu">
 //             <button
-//               className={`hz-menu-btn ${
-//                 activeTab === "profile" ? "active-btn" : ""
-//               }`}
-//               onClick={() =>
-//                 handleNav("/client-dashbroad2/ClientProfile", "profile")
-//               }
+//               className={`hz-menu-btn ${activeTab === "profile" ? "active-btn" : ""}`}
+//               onClick={() => goTo("/client-dashbroad2/ClientProfile", "profile")}
 //             >
 //               <User size={18} className="icon" />
 //               {!collapsed && "Profile"}
 //             </button>
 
 //             <button
-//               className={`hz-menu-btn ${
-//                 activeTab === "settings" ? "active-btn" : ""
-//               }`}
-//               onClick={() =>
-//                 handleNav(
-//                   "/client-dashbroad2/companyprofileview",
-//                   "settings"
-//                 )
-//               }
+//               className={`hz-menu-btn ${activeTab === "settings" ? "active-btn" : ""}`}
+//               onClick={() => goTo("/client-dashbroad2/companyprofileview", "settings")}
 //             >
 //               <Settings size={18} className="icon" />
 //               {!collapsed && "Settings"}
 //             </button>
 
-//             <button className="hz-menu-btn" onClick={() => navigate("/logout")}>
+//             <button
+//               className={`hz-menu-btn`}
+//               onClick={() => navigate("/logout")}
+//             >
 //               <LogOut size={18} className="icon" />
 //               {!collapsed && "Logout"}
 //             </button>
@@ -201,16 +161,13 @@
 //               <p className="hz-user-name">
 //                 {userInfo.firstName} {userInfo.lastName}
 //               </p>
-//               <p className="hz-user-role">Client</p>
+//               <p className="hz-user-role">Premium Member</p>
 //             </div>
 //           )}
 //         </div>
 //       </aside>
 
-//       {/* ========== STYLES ========== */}
 //       <style>{`
-//         /* --------- DESKTOP STYLES (UNCHANGED) --------- */
-
 //         .hz-sidebar {
 //           width: 300px;
 //           height: 100vh;
@@ -224,34 +181,39 @@
 //           justify-content: space-between;
 //           transition: 0.3s ease;
 //           font-family: 'Rubik', sans-serif;
-//           z-index: 999;
 //         }
 
 //         .hz-sidebar.collapsed {
 //           width: 80px;
+           
 //         }
 
+//         /* Toggle button */
 //         .hz-collapse-btn {
-//           position: absolute;
-//           top: 50px;
-//           left: 320px;
-//           width: 32px;
-//           height: 32px;
-//           border-radius: 10px;
-//           background: #a855f7;
-//           border: none;
-//           color: white;
-//           cursor: pointer;
-//           transition: left 0.3s ease;
-//         }
+//   position: absolute;
+//   top: 50px;
+//   left: 320px;          
+//   width: 32px;
+//   height: 32px;
+//   border-radius: 10px;
+//   background: #a855f7;
+//   border: none;
+//   color: white;
+//   cursor: pointer;
+//   transition: left 0.3s ease;
+// }
 
-//         .hz-sidebar.collapsed .hz-collapse-btn {
-//           left: 100px;
-//         }
+// /* When collapsed (80px width) */
+// .hz-sidebar.collapsed .hz-collapse-btn {
+//   left: 100px;
+// }
 
+        
+
+//         /* Logo card size FIXED */
 //         .hz-logo-card {
 //           width: 80%;
-//           height: 75px;
+//           height: 75px;    /* FIXED height */
 //           background: #a855f7;
 //           border-radius: 20px;
 //           display: flex;
@@ -259,7 +221,7 @@
 //           padding: 10px 18px;
 //           gap: 16px;
 //           box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-//           margin-top: -10px;
+//           margin-top:-10px;
 //         }
 
 //         .hz-logo-img {
@@ -273,10 +235,10 @@
 //           color: white;
 //         }
 
+//         /* Collapsed logo */
 //         .hz-logo-img-small {
 //           width: 55px;
 //           height: 55px;
-//           background: white;
 //           border-radius: 14px;
 //           border: 2px solid #a855f7;
 //           padding: 4px;
@@ -288,6 +250,7 @@
 //           margin-bottom: 10px;
 //         }
 
+//         /* Menu list */
 //         .hz-menu {
 //           margin-top: 5px;
 //           display: flex;
@@ -295,6 +258,7 @@
 //           gap: 12px;
 //         }
 
+//         /* EACH MENU BUTTON */
 //         .hz-menu-btn {
 //           height: 40px;
 //           width: 90%;
@@ -311,33 +275,48 @@
 //           color: #222;
 //         }
 
+//         /* HOVER  */
 //         .hz-menu-btn:hover {
-//           background: #c084fc;
+//           background: #c084fc;   /* lighter violet */
 //           color: white;
 //         }
 
+//         .hz-menu-btn:hover .icon,
+//         .hz-menu-btn:hover img {
+//           filter: brightness(0) invert(1);
+//         }
+
+//         /* ACTIVE BUTTON (clicked) */
 //         .active-btn {
 //           background: #a855f7 !important;
 //           color: white !important;
 //         }
 
+//         .active-btn .icon,
+//         .active-btn img {
+//           filter: brightness(0) invert(1);
+//         }
+
+//         /* Collapsed hover fix */
 //         .hz-sidebar.collapsed .hz-menu-btn {
 //           justify-content: center;
 //           padding: 0;
 //         }
+// .hz-user-footer {
+//   height: 70px;
+//   background: white;      
+//   border-radius: 0;     
+//   box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 
-//         .hz-user-footer {
-//           height: 70px;
-//           background: white;
-//           box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-//           width: calc(100% + 6px);
-//           margin-left: -18px;
-//           display: flex;
-//           align-items: center;
-//           padding: 10px 15px;
-//           gap: 12px;
-//           margin-bottom: 25px;
-//         }
+//   width: calc(100% + 6px);   /* stretches across full sidebar INCLUDING padding */
+//   margin-left: -18px;          
+
+//   display: flex;
+//   align-items: center;
+//   padding: 10px 15px;      
+//   gap: 12px;
+//   margin-bottom: 25px;
+// }
 
 //         .hz-user-avatar {
 //           width: 44px;
@@ -349,6 +328,7 @@
 //           align-items: center;
 //           color: white;
 //           font-weight: 600;
+//           margin-left:14px;
 //         }
 
 //         .hz-user-name {
@@ -363,75 +343,18 @@
 
 //         .hz-bottom-menu {
 //           margin-top: 100px;
+//           padding-top: 10px;
+//           // border-top: 1px solid #d0d0d0;
 //           display: flex;
 //           flex-direction: column;
 //           gap: 14px;
-//         }
-
-//         /* --------- MOBILE ONLY (NEW) --------- */
-
-//         .mobile-topbar {
-//           display: none;
-//         }
-
-//         @media (max-width: 768px) {
-//           .hz-sidebar {
-//             left: -320px;
-//           }
-
-//           .hz-sidebar.mobile-show {
-//             left: 0;
-//             width: 100%;
-//           }
-
-//           .hz-collapse-btn {
-//             display: none;
-//           }
-
-//           .mobile-topbar {
-//             display: flex;
-//             width: 100%;
-//             height: 60px;
-//             background: white;
-//             align-items: center;
-//             justify-content: space-between;
-//             padding: 0 16px;
-//             position: fixed;
-//             top: 0;
-//             z-index: 1000;
-//             border-bottom: 1px solid #ddd;
-//           }
-
-//           .mobile-logo {
-//             width: 45px;
-//           }
-
-//           .mobile-menu-btn {
-//             background: none;
-//             border: none;
-//             cursor: pointer;
-//           }
+          
 //         }
 //       `}</style>
 //     </>
 //   );
 // }
 
-
-
-
-import React, { useEffect, useState } from "react";
-import logo from "../../../assets/logo.png";
-import hire from "../../../assets/hire.png";
-
-import myservices from "../../../assets/MyServices.png";
-import myjobs from "../../../assets/myjobs.png";
-import search from "../../../assets/search.png";
-import profile from "../../../assets/profile.png";
-import settings from "../../../assets/settings.png";
-import save2 from "../../../assets/save2.png";
-import home from "../../../assets/Home.png";
-import signout from "../../../assets/signout.png";
 
 import {
   Home,
@@ -444,19 +367,25 @@ import {
   X,
 } from "lucide-react";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import hire from "../../../assets/hire.png";
+import save2 from "../../../assets/save2.png";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../../firbase/Firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
+import logo from "../../../assets/logo.png";
 
-export default function ClientSidebar() {
+export default function Sidebar() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [collapsed, setCollapsed] = useState(
     localStorage.getItem("sidebar-collapsed") === "true"
   );
+
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [activeTab, setActiveTab] = useState("home");
 
   const [userInfo, setUserInfo] = useState({
     firstName: "",
@@ -464,8 +393,9 @@ export default function ClientSidebar() {
   });
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (currentUser) => {
+    const unsub = onAuthStateChanged(auth, async (currentUser) => {
       if (!currentUser) return;
+
       const snap = await getDoc(doc(db, "users", currentUser.uid));
       if (snap.exists()) {
         const data = snap.data();
@@ -475,9 +405,9 @@ export default function ClientSidebar() {
         });
       }
     });
-  }, []);
 
-  const isActive = (path) => location.pathname === path;
+    return () => unsub();
+  }, []);
 
   function toggleSidebar() {
     const next = !collapsed;
@@ -486,14 +416,15 @@ export default function ClientSidebar() {
     window.dispatchEvent(new CustomEvent("sidebar-toggle", { detail: next }));
   }
 
-  function handleNav(path) {
+  function handleNav(path, name) {
+    setActiveTab(name);
     navigate(path);
-    setMobileOpen(false);
+    setMobileOpen(false); // ✅ close sidebar on mobile click
   }
 
   return (
     <>
-      {/* MOBILE TOPBAR */}
+      {/* ========== MOBILE TOPBAR (NEW) ========== */}
       <div className="mobile-topbar">
         <img src={logo} className="mobile-logo" />
         <button
@@ -504,13 +435,13 @@ export default function ClientSidebar() {
         </button>
       </div>
 
-      {/* SIDEBAR */}
+      {/* ========== SIDEBAR ========== */}
       <aside
         className={`hz-sidebar ${collapsed ? "collapsed" : ""} ${
           mobileOpen ? "mobile-show" : ""
         }`}
       >
-        {/* COLLAPSE */}
+        {/* TOGGLE BUTTON (DESKTOP SAME) */}
         <button className="hz-collapse-btn" onClick={toggleSidebar}>
           {collapsed ? ">" : "<"}
         </button>
@@ -530,92 +461,87 @@ export default function ClientSidebar() {
         {/* MENU */}
         <nav className="hz-menu">
           <button
-            className={`hz-menu-btn ${
-              isActive("/client-dashbroad2/clientserachbar") ? "active-btn" : ""
-            }`}
+            className={`hz-menu-btn ${activeTab === "home" ? "active-btn" : ""}`}
             onClick={() =>
-              handleNav("/client-dashbroad2/clientserachbar")
+              handleNav("/client-dashbroad2/clientserachbar", "home")
             }
           >
-            <img src={home} width={18} />
+            <Home size={18} className="icon" />
             {!collapsed && "Home"}
           </button>
 
           <button
-            className={`hz-menu-btn ${
-              isActive("/client-dashbroad2/clientcategories") ? "active-btn" : ""
-            }`}
+            className={`hz-menu-btn ${activeTab === "browse" ? "active-btn" : ""}`}
             onClick={() =>
-              handleNav("/client-dashbroad2/clientcategories")
+              handleNav("/client-dashbroad2/clientcategories", "browse")
             }
           >
-            <img src={search} width={18} />
+            <Search size={18} className="icon" />
             {!collapsed && "Browse Projects"}
           </button>
 
           <button
-            className={`hz-menu-btn ${
-              isActive("/client-dashbroad2/AddJobScreen") ? "active-btn" : ""
-            }`}
+            className={`hz-menu-btn ${activeTab === "jobs" ? "active-btn" : ""}`}
             onClick={() =>
-              handleNav("/client-dashbroad2/AddJobScreen")
+              handleNav("/client-dashbroad2/AddJobScreen", "jobs")
             }
           >
-            <img src={myjobs} width={18} />
-            {!collapsed && "Job Posted"}
+            <Briefcase size={18} className="icon" />
+            {!collapsed && "My jobs"}
           </button>
 
           <button
             className={`hz-menu-btn ${
-              isActive("/client-dashbroad2/my-hires") ? "active-btn" : ""
+              activeTab === "service" ? "active-btn" : ""
             }`}
             onClick={() =>
-              handleNav("/client-dashbroad2/my-hires")
+              handleNav("/client-dashbroad2/my-hires", "service")
             }
           >
-            <img src={hire} width={18} />
-            {!collapsed && "Hire"}
+            <img src={hire} width={18} className="icon" />
+            {!collapsed && "My Service"}
           </button>
 
           <button
-            className={`hz-menu-btn ${
-              isActive("/client-dashbroad2/Clientsaved") ? "active-btn" : ""
-            }`}
+            className={`hz-menu-btn ${activeTab === "saved" ? "active-btn" : ""}`}
             onClick={() =>
-              handleNav("/client-dashbroad2/Clientsaved")
+              handleNav("/client-dashbroad2/Clientsaved", "saved")
             }
           >
-            <img src={save2} width={18} />
+            <img src={save2} width={18} className="icon" />
             {!collapsed && "Saved"}
           </button>
 
           <div className="hz-bottom-menu">
             <button
               className={`hz-menu-btn ${
-                isActive("/client-dashbroad2/ClientProfile") ? "active-btn" : ""
+                activeTab === "profile" ? "active-btn" : ""
               }`}
               onClick={() =>
-                handleNav("/client-dashbroad2/ClientProfile")
+                handleNav("/client-dashbroad2/ClientProfile", "profile")
               }
             >
-            <img src={profile} width={18} />
+              <User size={18} className="icon" />
               {!collapsed && "Profile"}
             </button>
 
             <button
               className={`hz-menu-btn ${
-                isActive("/client-dashbroad2/companyprofileview") ? "active-btn" : ""
+                activeTab === "settings" ? "active-btn" : ""
               }`}
               onClick={() =>
-                handleNav("/client-dashbroad2/companyprofileview")
+                handleNav(
+                  "/client-dashbroad2/companyprofileview",
+                  "settings"
+                )
               }
             >
-             <img src={settings} width={18} />
+              <Settings size={18} className="icon" />
               {!collapsed && "Settings"}
             </button>
 
             <button className="hz-menu-btn" onClick={() => navigate("/logout")}>
-              <img src={signout} width={18} />
+              <LogOut size={18} className="icon" />
               {!collapsed && "Logout"}
             </button>
           </div>
@@ -626,272 +552,223 @@ export default function ClientSidebar() {
           <div className="hz-user-avatar">
             {(userInfo.firstName || "?")[0].toUpperCase()}
           </div>
+
           {!collapsed && (
             <div>
               <p className="hz-user-name">
                 {userInfo.firstName} {userInfo.lastName}
               </p>
-              <p className="hz-user-role">Client</p>
+              <p className="hz-user-role">Premium Member</p>
             </div>
           )}
         </div>
       </aside>
 
-      {/* 🔥 SAME CSS AS FREELANCER */}
-     
-      {/* CSS */}
+      {/* ========== STYLES ========== */}
       <style>{`
-     .hz-sidebar {
-  width: 300px;
-  height: 100vh;
-  background: #e8e8e8;
-  position: fixed;
-  left: 0;
-  top: 0;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  transition: 0.3s ease;
-  font-family: "Rubik", sans-serif;
-  z-index: 999;
-}
+        /* --------- DESKTOP STYLES (UNCHANGED) --------- */
 
-.hz-sidebar.collapsed {
-  width: 80px;
-}
+        .hz-sidebar {
+          width: 300px;
+          height: 100vh;
+          background: #e8e8e8;
+          position: fixed;
+          left: 0;
+          top: 0;
+          padding: 18px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          transition: 0.3s ease;
+          font-family: 'Rubik', sans-serif;
+          z-index: 999;
+        }
 
-/* COLLAPSE BUTTON */
-.hz-collapse-btn {
-  position: absolute;
-  top: 60px;
-  left: 290px;
-  width: 32px;
-  height: 42px;
-  border-radius: 10px;
-  background: #a855f7;
-  border: none;
-  color: white;
-  cursor: pointer;
-  transition: left 0.3s ease;
-}
+        .hz-sidebar.collapsed {
+          width: 80px;
+        }
 
-.hz-sidebar.collapsed .hz-collapse-btn {
-  left: 70px;
-   top: 100px;
-}
+        .hz-collapse-btn {
+          position: absolute;
+          top: 50px;
+          left: 320px;
+          width: 32px;
+          height: 32px;
+          border-radius: 10px;
+          background: #a855f7;
+          border: none;
+          color: white;
+          cursor: pointer;
+          transition: left 0.3s ease;
+        }
 
-/* LOGO */
-.hz-logo-card {
-  width: 240px;
-  height: 90px;
-  background: #a855f7;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  padding: 10px 18px;
-  gap: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 30px;
-  margin-bottom: 40px;
-}
+        .hz-sidebar.collapsed .hz-collapse-btn {
+          left: 100px;
+        }
 
-.hz-logo-img {
-  width: 46px;
-  height: 46px;
-}
+        .hz-logo-card {
+          width: 80%;
+          height: 75px;
+          background: #a855f7;
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          padding: 10px 18px;
+          gap: 16px;
+          box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+          margin-top: -10px;
+        }
 
-.hz-logo-text {
-  font-size: 22px;
-  font-weight: 600;
-  color: white;
-}
+        .hz-logo-img {
+          width: 46px;
+          height: 46px;
+        }
 
-.hz-logo-small-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  margin-bottom: 40px;
-}
+        .hz-logo-text {
+          font-size: 22px;
+          font-weight: 600;
+          color: white;
+        }
 
-.hz-logo-img-small {
-  width: 55px;
-  height: 55px;
+        .hz-logo-img-small {
+          width: 55px;
+          height: 55px;
+          background: white;
+          border-radius: 14px;
+          border: 2px solid #a855f7;
+          padding: 4px;
+        }
 
-  border-radius: 14px;
-  border: 2px solid #a855f7;
-  padding: 4px;
-}
+        .hz-logo-small-wrap {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 10px;
+        }
 
-/* MENU */
-.hz-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1; /* IMPORTANT */
-}
+        .hz-menu {
+          margin-top: 5px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
 
-.hz-menu-btn {
-  height: 40px;
-  width: 90%;
-  border: none;
-  border-radius: 14px;
-  background: none;
-  display: flex;
-  align-items: center;
-  padding: 25px 16px;
-  gap: 12px;
-  cursor: pointer;
-  transition: 0.25s ease;
-  font-size: 15px;
-  color: #222;
-}
+        .hz-menu-btn {
+          height: 40px;
+          width: 90%;
+          border: none;
+          border-radius: 14px;
+          background: none;
+          display: flex;
+          align-items: center;
+          padding: 0 16px;
+          gap: 12px;
+          cursor: pointer;
+          transition: 0.25s ease;
+          font-size: 15px;
+          color: #222;
+        }
 
-.hz-menu-btn img {
-  width: 18px;
-  min-width: 18px;
-}
+        .hz-menu-btn:hover {
+          background: #c084fc;
+          color: white;
+        }
 
-/* HOVER */
-.hz-menu-btn:hover {
-  background: #c084fc;
-  color: white;
-}
+        .active-btn {
+          background: #a855f7 !important;
+          color: white !important;
+        }
 
-.hz-menu-btn:hover img {
-  filter: brightness(0) invert(1);
-}
+        .hz-sidebar.collapsed .hz-menu-btn {
+          justify-content: center;
+          padding: 0;
+        }
 
-/* ACTIVE */
-.active-btn {
-  background: #a855f7 !important;
-  color: white !important;
-}
+        .hz-user-footer {
+          height: 70px;
+          background: white;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+          width: calc(100% + 6px);
+          margin-left: -18px;
+          display: flex;
+          align-items: center;
+          padding: 10px 15px;
+          gap: 12px;
+          margin-bottom: 25px;
+        }
 
-.active-btn img {
-  filter: brightness(0) invert(1);
-}
+        .hz-user-avatar {
+          width: 44px;
+          height: 44px;
+          background: #a855f7;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          font-weight: 600;
+        }
 
-/* COLLAPSED MENU (NO SPACING CHANGE) */
-.hz-sidebar.collapsed .hz-menu-btn {
-  justify-content: center;
-  padding: 25px 16px;
-}
+        .hz-user-name {
+          font-size: 15px;
+          font-weight: 600;
+        }
 
-/* BOTTOM MENU */
-.hz-bottom-menu {
-  margin-top: auto; /* KEY FIX */
-  padding-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+        .hz-user-role {
+          font-size: 12px;
+          color: #666;
+        }
 
-/* USER FOOTER */
-.hz-user-footer {
-  height: 70px;
-  background: white;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  width: calc(100% + 35px);
-  margin-left: -18px;
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  gap: 12px;
-  margin-bottom: 25px;
-}
+        .hz-bottom-menu {
+          margin-top: 100px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
 
-.hz-user-avatar {
-  width: 44px;
-  height: 44px;
-  background: #a855f7;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: 600;
-}
+        /* --------- MOBILE ONLY (NEW) --------- */
 
-.hz-user-name {
-  font-size: 15px;
-  font-weight: 600;
-margin-top:10px;
-}
+        .mobile-topbar {
+          display: none;
+        }
 
-.hz-user-role {
-  font-size: 12px;
-  color: #666;
- 
-  margin-top:-20px;
- 
-}
+        @media (max-width: 768px) {
+          .hz-sidebar {
+            left: -320px;
+          }
 
-/* MOBILE TOPBAR */
-.mobile-topbar {
-  display: none;
-}
+          .hz-sidebar.mobile-show {
+            left: 0;
+            width: 100%;
+          }
 
-@media (max-width: 768px) {
-*{
-overflow:hidden;
-}
-  .hz-sidebar {
-  top:30px;
-    left: -320px;
-  }
+          .hz-collapse-btn {
+            display: none;
+          }
 
-  .hz-sidebar.mobile-show {
- height:100%;
-    left: 0;
-    width: 100%;
-  }
+          .mobile-topbar {
+            display: flex;
+            width: 100%;
+            height: 60px;
+            background: white;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #ddd;
+          }
 
-  .hz-collapse-btn {
-    display: none;
-  }
+          .mobile-logo {
+            width: 45px;
+          }
 
-  .mobile-topbar {
-    display: flex;
-    width: 100%;
-    height: 60px;
-    background: white;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 15px;
-    border-bottom: 1px solid #ddd;
-    position: fixed;
-    top: 0;
-    z-index: 1000;
-  }
-
-  .mobile-logo {
-    width: 45px;
-  
-  }
-
-  .mobile-menu-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
- /* LOGO */
-.hz-logo-card {
-  width: 360px;
-  height: 90px;
-  background: #a855f7;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  padding: 10px 18px;
-  gap: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 30px;
-  margin-bottom: 40px;
- 
-}
-
-}
-
+          .mobile-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+          }
+        }
       `}</style>
     </>
   );

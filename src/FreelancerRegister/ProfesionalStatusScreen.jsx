@@ -316,7 +316,7 @@ export default function ProfessionalStatusScreen() {
           professional_title: title.trim(),
           experience_level: selectedExperience,
           current_status: currentStatus,
-          role: "freelancer",
+          role: "client",
           profileCompleted: true,
           updated_at: serverTimestamp(),
         },
