@@ -2551,13 +2551,10 @@ const styles = {
     padding: "40px 0",
 
     backgroundColor: "#FFFFFF",
-    minHeight: "100vh",
     fontFamily:
       "'Rubik', Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-
-
-
   },
+
 
   card: {
     width: "100%",
