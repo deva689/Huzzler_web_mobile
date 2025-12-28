@@ -584,28 +584,28 @@ const styles = {
     cursor: "pointer",
   },
 
-  activeTab: {
-     backgroundColor: "transparent",        // remove selection background
-    color: "yellow",                        // highlight active text if you want
-    padding: "10px 15px",
-    border: "none",
-    borderBottom: "3px solid yellow",       // ACTIVE underline only
-    cursor: "pointer",
-    fontSize: "16px",
-    fontWeight: "600",
-  },
+  // activeTab: {
+  //    backgroundColor: "transparent",        // remove selection background
+  //   color: "yellow",                        // highlight active text if you want
+  //   padding: "10px 15px",
+  //   border: "none",
+  //   borderBottom: "3px solid yellow",       // ACTIVE underline only
+  //   cursor: "pointer",
+  //   fontSize: "16px",
+  //   fontWeight: "600",
+  // },
 
 
-  activeTab: {
-    padding: "10px 0",
-    background: "transparent",
-    border: "none",
-    borderBottom: "3px solid #d3df35ff", // violet underline
-    color: "#e0e715ff",                  // violet
-    cursor: "pointer",
-    fontWeight: "600",
-    fontSize: "16px",
-  },
+  // activeTab: {
+  //   padding: "10px 0",
+  //   background: "transparent",
+  //   border: "none",
+  //   borderBottom: "3px solid #d3df35ff", // violet underline
+  //   color: "#e0e715ff",                  // violet
+  //   cursor: "pointer",
+  //   fontWeight: "600",
+  //   fontSize: "16px",
+  // },
 
   content: {
     lineHeight: "1.7",
