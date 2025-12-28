@@ -865,7 +865,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import backarrow from "../../assets/backarrow.png";
+// import backarrow from "../../assets/backarrow.png";
 // 🔹 KEEP YOUR FIREBASE PATH (unchanged)
 import { db } from "../../firbase/Firebase";
 import emptyWorks from "../../assets/job.png"; // dummy image

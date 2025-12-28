@@ -170,7 +170,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import backarrow from "../assets/backarrow.png";
+// import backarrow from "../assets/backarrow.png";
 
 const HelpCenter = () => {
   const navigate = useNavigate();

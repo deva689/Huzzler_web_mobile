@@ -458,7 +458,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // assets
 import arrow from "../../assets/icons/arrow.png";
-import backarrow from "../../assets/icons/backarrow.png";
+// import backarrow from "../../assets/icons/backarrow.png";
 import profilePlaceholder from "../../assets/icons/profile.png";
 import notification from "../../assets/kk.png";
 import MyServices from "../../assets/icons/MyServices.png";

@@ -827,7 +827,7 @@ import {
 
 import { db } from "../firbase/Firebase";
 
-import backarrow from "../assets/backarrow.png";
+// import backarrow from "../assets/backarrow.png";
 import arrow from "../assets/arrow.png";
 import serviceEmpty from "../assets/service.png";
 import search from "../assets/search.png";

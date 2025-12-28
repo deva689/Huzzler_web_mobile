@@ -333,7 +333,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../firbase/Firebase";
-import backArrow from "../../../assets/backarrow.png"
+// import backArrow from "../../../assets/backarrow.png"
 export default function ClientEditJob() {
   const location = useLocation();
   const navigate = useNavigate();
