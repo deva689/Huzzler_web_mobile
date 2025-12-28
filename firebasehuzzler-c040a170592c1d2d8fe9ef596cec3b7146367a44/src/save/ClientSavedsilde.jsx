@@ -715,7 +715,7 @@
 // import { db } from "../firbase/Firebase"; // 🔁 keep your existing path
 
 // // 🔹 UI imports from UIFreelanceSaved.jsx
-// import backarrow from "../assets/backarrow.png";
+// import backarrow from "../assets/Backarrow.png";
 // import message from "../assets/message.png";
 // import notification from "../assets/notification.png";
 // import profile from "../assets/profile.png";
@@ -1491,7 +1491,7 @@
 // import { db } from "../firbase/Firebase"; // 🔁 keep your existing path
 
 // // 🔹 UI imports from UIFreelanceSaved.jsx
-// import backarrow from "../assets/backarrow.png";
+// import backarrow from "../assets/Backarrow.png";
 // import message from "../assets/message.png";
 // import notification from "../assets/notification.png";
 // import profile from "../assets/profile.png";
