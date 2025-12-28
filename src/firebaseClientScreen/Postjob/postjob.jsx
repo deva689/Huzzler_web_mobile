@@ -13,7 +13,7 @@
 //   serverTimestamp,
 //   Timestamp,
 // } from "firebase/firestore";
-// import backarrow from "../../assets/Backarrow.png"
+// import backarrow from "../../assets/BackArrow.png"
 // // 🔹 UPDATE THIS PATH TO MATCH YOUR PROJECT
 // import { db } from "../../firbase/Firebase";
 
@@ -1387,7 +1387,7 @@ import {
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
-import backarrow from "../../assets/Backarrow.png"
+import backarrow from "../../assets/BackArrow.png"
 // 🔹 UPDATE THIS PATH TO MATCH YOUR PROJECT
 import { db } from "../../firbase/Firebase";
 

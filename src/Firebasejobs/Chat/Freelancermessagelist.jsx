@@ -423,7 +423,7 @@ export default function FreelancerAcceptedChats() {
 // import { getAuth } from "firebase/auth";
 // import { useNavigate } from "react-router-dom";
 // import search from "../../assets/search.png"
-// import backarrow from "../../assets/Backarrow.png"
+// import backarrow from "../../assets/BackArrow.png"
 // //search
 
 // export default function FreelancerAcceptedChats() {

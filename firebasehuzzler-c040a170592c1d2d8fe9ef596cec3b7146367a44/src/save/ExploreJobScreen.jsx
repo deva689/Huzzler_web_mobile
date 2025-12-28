@@ -12,7 +12,7 @@
 // import { auth, db } from "../firbase/Firebase";
 // import { Link, useNavigate } from "react-router-dom";
 
-// import backarrow from "../assets/icons/Backarrow.png";
+// import backarrow from "../assets/icons/BackArrow.png";
 // import message from "../assets/icons/message.png";
 // import notification from "../assets/notification.png";
 // import profile from "../assets/icons/profile.png";
@@ -489,7 +489,7 @@
 // import { auth, db } from "../firbase/Firebase";
 // import { Link, useNavigate } from "react-router-dom";
 
-// import backarrow from "../assets/icons/Backarrow.png";
+// import backarrow from "../assets/icons/BackArrow.png";
 // import message from "../assets/icons/message.png";
 // import notification from "../assets/notification.png";
 // import profile from "../assets/icons/profile.png";
@@ -897,7 +897,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firbase/Firebase";
 import { Link, useNavigate } from "react-router-dom";
 
-import backarrow from "../assets/icons/Backarrow.png";
+import backarrow from "../assets/icons/BackArrow.png";
 import message from "../assets/icons/message.png";
 import notification from "../assets/notification.png";
 import profile from "../assets/icons/profile.png";

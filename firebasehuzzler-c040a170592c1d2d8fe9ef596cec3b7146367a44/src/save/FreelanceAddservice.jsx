@@ -9,7 +9,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firbase/Firebase"; // 👉 adjust path to your firebase file
-import backarrow from "../assets/Backarrow.png";
+import backarrow from "../assets/BackArrow.png";
 
 // --------------------------------------------------
 // INLINE CSS (same file)
