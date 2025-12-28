@@ -9,7 +9,7 @@
 // } from "firebase/firestore";
 // import { db } from "../../../firbase/Firebase";
 
-// // import backarrow from "../../../assets/BackArrow.png"
+// // import backarrow from "../../../assets/backarrow.png"
 
 // export default function ClientEditJob() {
 //   const location = useLocation();
@@ -333,7 +333,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../../firbase/Firebase";
-import backArrow from "../../../assets/BackArrow.png"
+import backArrow from "../../../assets/backarrow.png"
 export default function ClientEditJob() {
   const location = useLocation();
   const navigate = useNavigate();

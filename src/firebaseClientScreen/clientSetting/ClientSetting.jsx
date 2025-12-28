@@ -12,7 +12,7 @@
 // import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { useNavigate } from "react-router-dom";
 
-// import backarrow from "../../assets/BackArrow.png";
+// import backarrow from "../../assets/backarrow.png";
 // import edit from "../../assets/edit.png";
 
 // /* ------------------------------------------------------------
@@ -489,7 +489,7 @@ import { getAuth } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 
-import backarrow from "../../assets/BackArrow.png";
+// import backarrow from "../../assets/backarrow.png";
 import edit from "../../assets/edit.png";
 
 /* ------------------------------------------------------------

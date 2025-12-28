@@ -1,5 +1,5 @@
 // import React, { useState } from "react";
-// import backarrow from "../assets/BackArrow.png"
+// import backarrow from "../assets/backarrow.png"
 
 // const HelpCenter = () => {
 //   const [openIndex, setOpenIndex] = useState(null);
@@ -170,7 +170,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import backarrow from "../assets/BackArrow.png";
+import backarrow from "../assets/backarrow.png";
 
 const HelpCenter = () => {
   const navigate = useNavigate();

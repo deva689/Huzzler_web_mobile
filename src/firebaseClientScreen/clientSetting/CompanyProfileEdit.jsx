@@ -13,7 +13,7 @@
 // import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { useNavigate } from "react-router-dom";
 
-// import backarrow from "../../assets/BackArrow.png";
+// import backarrow from "../../assets/backarrow.png";
 // import edit from "../../assets/edit.png";
 
 // /* ------------------------------------------------------------
@@ -391,7 +391,7 @@
 // import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // import { useNavigate } from "react-router-dom";
 
-// import backarrow from "../../assets/BackArrow.png";
+// import backarrow from "../../assets/backarrow.png";
 // import edit from "../../assets/edit.png";
 
 // /* ------------------------------------------------------------
@@ -699,7 +699,7 @@ import {
 import { getStorage } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 
-import backarrow from "../../assets/BackArrow.png";
+// import backarrow from "../../assets/backarrow.png";
 import edit from "../../assets/edit.png";
 
 /* ------------------------------------------------------------
